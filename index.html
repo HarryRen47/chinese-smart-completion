@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中文智能续写工具 - 在线测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .main {
+            padding: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #userInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        #userInput:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        
+        .btn-debug {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            font-size: 12px;
+            padding: 10px 12px;
+        }
+        
+        .tabs-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px 12px 0 0;
+            padding: 8px;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            background: transparent;
+        }
+        
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .tab-btn.active {
+            background: #4f46e5;
+            color: white;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
+        }
+        
+        .tab-content {
+            background: #f8fafc;
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .tab-panel {
+            display: none;
+            padding: 20px;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
+        }
+        
+        .example-btn {
+            padding: 10px 15px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .example-btn:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+        
+        .result-section {
+            margin-top: 30px;
+        }
+        
+        .result-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 60px;
+            font-size: 16px;
+            position: relative;
+        }
+        
+        .result-content {
+            line-height: 1.6;
+        }
+        
+        .result-empty {
+            color: #64748b;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .result-success {
+            color: #059669;
+            font-weight: 500;
+        }
+        
+        .result-error {
+            color: #dc2626;
+        }
+
+        .result-pending {
+            color: #64748b;
+            font-style: italic;
+            opacity: 0.8;
+        }
+        
+        .result-category {
+            font-size: 12px;
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            background: #e0e7ff;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .history {
+            margin-top: 30px;
+        }
+        
+        .history-item {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .history-input {
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+        
+        .history-output {
+            color: #059669;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+        
+        .clear-btn {
+            float: right;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .tab-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 100px;
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 中文智能续写工具</h1>
+            <p>输入任何内容，体验智能补全的魔力</p>
+        </div>
+        
+        <div class="main">
+            <div class="input-section">
+                <div class="input-group">
+                    <input type="text" id="userInput" placeholder="请输入要测试的内容，如：1+1、3天后、纽约时间..." maxlength="100">
+                    <button class="btn" onclick="processInput()">🚀 智能续写</button>
+                    <button class="btn btn-secondary" onclick="clearAll()">🗑️ 清空</button>
+                    <button class="btn btn-debug" onclick="toggleDebug()">🐛 调试</button>
+                </div>
+                
+                <div class="tabs-container">
+                    <div class="tab-nav">
+                        <div class="tab-btn active" onclick="switchTab('math')">🔢 数学计算</div>
+                        <div class="tab-btn" onclick="switchTab('date')">📅 日期时间</div>
+                        <div class="tab-btn" onclick="switchTab('timezone')">🌍 时区查询</div>
+                        <div class="tab-btn" onclick="switchTab('unit')">🔄 单位转换</div>
+                        <div class="tab-btn" onclick="switchTab('currency')">💰 汇率换算</div>
+                        <div class="tab-btn" onclick="switchTab('formula')">📐 公式定律</div>
+                        <div class="tab-btn" onclick="switchTab('calorie')">🍎 热量查询</div>
+                        <div class="tab-btn" onclick="switchTab('zodiac')">🐲 生肖查询</div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div id="tab-math" class="tab-panel active">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('1+1')">1+1</div>
+                                <div class="example-btn" onclick="setInput('299打7折')">299打7折</div>
+                                <div class="example-btn" onclick="setInput('100的20%')">100的20%</div>
+                                <div class="example-btn" onclick="setInput('9的平方')">9的平方</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-date" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('3天后')">3天后</div>
+                                <div class="example-btn" onclick="setInput('明天')">明天</div>
+                                <div class="example-btn" onclick="setInput('本周五')">本周五</div>
+                                <div class="example-btn" onclick="setInput('距离10月1日还剩')">距离10月1日还剩</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-timezone" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('纽约时间')">纽约时间</div>
+                                <div class="example-btn" onclick="setInput('现在东京时间')">现在东京时间</div>
+                                <div class="example-btn" onclick="setInput('伦敦现在几点')">伦敦现在几点</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-unit" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('37摄氏度等于')">37摄氏度等于</div>
+                                <div class="example-btn" onclick="setInput('100米')">100米</div>
+                                <div class="example-btn" onclick="setInput('1公斤')">1公斤</div>
+                                <div class="example-btn" onclick="setInput('1亩等于')">1亩等于</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-currency" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('1美元')">1美元</div>
+                                <div class="example-btn" onclick="setInput('100人民币')">100人民币</div>
+                                <div class="example-btn" onclick="setInput('1欧元')">1欧元</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-formula" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('牛顿第二定律')">牛顿第二定律</div>
+                                <div class="example-btn" onclick="setInput('水的分子式')">水的分子式</div>
+                                <div class="example-btn" onclick="setInput('光速是多少')">光速是多少</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-calorie" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('100克米饭热量')">100克米饭热量</div>
+                                <div class="example-btn" onclick="setInput('我吃了100克米饭')">我吃了100克米饭</div>
+                                <div class="example-btn" onclick="setInput('苹果热量')">苹果热量</div>
+                            </div>
+                        </div>
+                        
+                        <div id="tab-zodiac" class="tab-panel">
+                            <div class="examples">
+                                <div class="example-btn" onclick="setInput('1990年属')">1990年属</div>
+                                <div class="example-btn" onclick="setInput('1998年属')">1998年属</div>
+                                <div class="example-btn" onclick="setInput('属虎的年份')">属虎的年份</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h3>📝 续写结果</h3>
+                <div class="result-box">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="result" class="result-content result-empty">
+                        在上方输入内容，点击"智能续写"按钮查看结果
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history">
+                <h3>📚 测试历史 
+                    <button class="btn btn-secondary clear-btn" onclick="clearHistory()">清空历史</button>
+                </h3>
+                <div id="historyContainer">
+                    <div style="text-align: center; color: #64748b; padding: 20px;">
+                        暂无测试记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 智能续写引擎核心代码
+        class ChineseSmartCompletion {
+            constructor() {
+                this.rules = this.initializeRules();
+                this.cache = new Map();
+                this.initializeData();
+            }
+
+            initializeRules() {
+                return [
+                    {
+                        category: 'math',
+                        priority: 1,
+                        patterns: [
+                            /^(\d+(?:\.\d+)?)\s*([+\-*/])\s*(\d+(?:\.\d+)?)$/,
+                            /^(\d+(?:\.\d+)?)\s*(加|减|乘|除)\s*(\d+(?:\.\d+)?)$/,
+                            /^(\d+(?:\.\d+)?)\s*的?\s*(平方根|立方根|平方|立方)$/,
+                            /^(\d+(?:\.\d+)?)\s*打\s*(\d+(?:\.\d+)?)\s*折$/,
+                            /^.*?原价\s*(\d+(?:\.\d+)?)\s*打\s*(\d+(?:\.\d+)?)\s*折$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*的\s*(\d+(?:\.\d+)?)\s*%$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*%\s*的\s*(\d+(?:\.\d+)?)$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*分期\s*(\d+)\s*期$/
+                        ],
+                        handler: this.handleMathCalculation.bind(this)
+                    },
+                    {
+                        category: 'date',
+                        priority: 2,
+                        patterns: [
+                            /^.*?(\d+)\s*(天|日|周|月|年)\s*(后|前|内).*?$/,
+                            /^.*?(今天|明天|后天|昨天|前天|大后天).*?$/,
+                            /^.*?(下周|上周|下个月|上个月|明年|去年)\s*(一|二|三|四|五|六|日|天|月)?.*?$/,
+                            /^.*?(\d+)\s*月\s*(\d+)\s*日.*?$/,
+                            /^.*?(\d{4})\s*年\s*(\d+)\s*月\s*(\d+)\s*日.*?$/,
+                            /^.*?距离\s*(\d+)\s*月\s*(\d+)\s*日\s*(还有|已过|还剩)$/,
+                            /^.*?本周\s*(一|二|三|四|五|六|日).*?$/
+                        ],
+                        handler: this.handleDateCalculation.bind(this)
+                    },
+                    {
+                        category: 'timezone',
+                        priority: 3,
+                        patterns: [
+                            /^.*?([\u4e00-\u9fa5]+|[A-Za-z]+)\s*时间.*?$/,
+                            /^.*?(\d{1,2})[:\.]?(\d{2})?\s*(点|时)\s*([\u4e00-\u9fa5]+)\s*(时间)?.*?$/,
+                            /^.*?现在\s*([\u4e00-\u9fa5]+|[A-Za-z]+)\s*(几点|时间).*?$/,
+                            /^.*?([\u4e00-\u9fa5]+|[A-Za-z]+)\s*现在\s*(几点|时间).*?$/
+                        ],
+                        handler: this.handleTimezoneQuery.bind(this)
+                    },
+                    {
+                        category: 'unit',
+                        priority: 4,
+                        patterns: [
+                            /^.*?(\d+(?:\.\d+)?)\s*(摄氏度|华氏度|℃|℉)\s*(等于|转换为|转成)?.*?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(米|厘米|毫米|千米|英尺|英寸|码|m|cm|mm|km|ft|in|yard)(?:\s*地?)?\s*(等于|转换为|转成)?.*?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(公斤|千克|克|磅|吨|kg|g|lb|t)\s*(等于|转换为|转成)?.*?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(平方米|平方千米|亩|英亩|㎡|km²)(?:\s*地?)?\s*(等于|转换为|转成)?.*?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(升|毫升|加仑|l|ml|gal)\s*(等于|转换为|转成)?.*?$/
+                        ],
+                        handler: this.handleUnitConversion.bind(this)
+                    },
+                    {
+                        category: 'currency',
+                        priority: 5,
+                        patterns: [
+                            /^.*?(\d+(?:\.\d+)?)\s*(美元|人民币|欧元|英镑|日元|港币|USD|CNY|EUR|GBP|JPY|HKD).*?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(美元|人民币|欧元|英镑|日元|港币)\s*(等于|换算成|兑换)?.*?$/
+                        ],
+                        handler: this.handleCurrencyConversion.bind(this)
+                    },
+                    {
+                        category: 'formula',
+                        priority: 6,
+                        patterns: [
+                            /^.*?(牛顿第[一二三]定律|欧姆定律|万有引力定律|能量守恒定律)(?:是什么?)?$/,
+                            /^.*?(勾股定理|二次方程|圆的面积公式|球的体积公式)(?:是什么?)?$/,
+                            /^.*?(水|二氧化碳|氧气|甲烷|乙醇)的?(?:分子式|化学式)(?:是什么?)?$/,
+                            /^(?:.*?)(光速|声速|重力加速度|普朗克常数)(?:是多少?|是什么?)?$/
+                        ],
+                        handler: this.handleFormulaQuery.bind(this)
+                    },
+                    {
+                        category: 'calorie',
+                        priority: 7,
+                        patterns: [
+                            /^.*?(?:我吃了?)?(\d+)\s*克?\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)[，,]?\s*热量$/,
+                            /^(\d+)\s*克\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/,
+                            /^(\d+)\s*g\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/,
+                            /^(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/,
+                            /^.*?(?:我吃了?)?(\d+)\s*克?\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜).*?$/
+                        ],
+                        handler: this.handleCalorieQuery.bind(this)
+                    },
+                    {
+                        category: 'zodiac',
+                        priority: 8,
+                        patterns: [
+                            /^.*?(\d{4})\s*年\s*属\s*什么?$/,
+                            /^.*?(\d{4})\s*年\s*属$/,
+                            /^.*?(\d{4})\s*属\s*什么?$/,
+                            /^.*?属\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪)\s*的\s*年份.*?$/,
+                            /^.*?生肖\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪).*?$/
+                        ],
+                        handler: this.handleZodiacQuery.bind(this)
+                    }
+                ];
+            }
+
+            initializeData() {
+                // 时区映射
+                this.timezoneMap = {
+                    '纽约': 'America/New_York',
+                    '洛杉矶': 'America/Los_Angeles',
+                    '伦敦': 'Europe/London',
+                    '巴黎': 'Europe/Paris',
+                    '东京': 'Asia/Tokyo',
+                    '首尔': 'Asia/Seoul',
+                    '新加坡': 'Asia/Singapore',
+                    '迪拜': 'Asia/Dubai',
+                    '悉尼': 'Australia/Sydney',
+                    '墨尔本': 'Australia/Melbourne',
+                    '莫斯科': 'Europe/Moscow',
+                    '柏林': 'Europe/Berlin',
+                    '罗马': 'Europe/Rome',
+                    '孟买': 'Asia/Kolkata',
+                    '曼谷': 'Asia/Bangkok'
+                };
+
+                // 公式数据库
+                this.formulaDatabase = {
+                    '牛顿第二定律': 'F = ma',
+                    '牛顿第一定律': '物体保持静止或匀速直线运动状态',
+                    '牛顿第三定律': '作用力与反作用力大小相等，方向相反',
+                    '欧姆定律': 'V = IR',
+                    '万有引力定律': 'F = G(m₁m₂)/r²',
+                    '能量守恒定律': 'E = mc²',
+                    '勾股定理': 'a² + b² = c²',
+                    '二次方程': 'x = (-b ± √(b²-4ac)) / 2a',
+                    '圆的面积公式': 'S = πr²',
+                    '球的体积公式': 'V = (4/3)πr³',
+                    '水的分子式': 'H₂O',
+                    '二氧化碳': 'CO₂',
+                    '氧气的化学式': 'O₂',
+                    '甲烷': 'CH₄',
+                    '乙醇': 'C₂H₅OH',
+                    '光速': '299,792,458 m/s',
+                    '声速': '343 m/s（20°C空气中）',
+                    '重力加速度': '9.8 m/s²',
+                    '普朗克常数': '6.626×10⁻³⁴ J·s'
+                };
+
+                // 汇率数据
+                this.exchangeRates = {
+                    'USD': { 'CNY': 7.1776, 'EUR': 0.8234, 'GBP': 0.7456, 'JPY': 149.50, 'HKD': 7.8234 },
+                    'CNY': { 'USD': 0.1393, 'EUR': 0.1147, 'GBP': 0.1039, 'JPY': 20.83, 'HKD': 1.0898 },
+                    'EUR': { 'USD': 1.2143, 'CNY': 8.7234, 'GBP': 0.9054, 'JPY': 181.23, 'HKD': 9.5012 },
+                    'GBP': { 'USD': 1.3416, 'CNY': 9.6321, 'EUR': 1.1045, 'JPY': 200.15, 'HKD': 10.4923 },
+                    'JPY': { 'USD': 0.0067, 'CNY': 0.048, 'EUR': 0.0055, 'GBP': 0.005, 'HKD': 0.0523 },
+                    'HKD': { 'USD': 0.1278, 'CNY': 0.9176, 'EUR': 0.1053, 'GBP': 0.0953, 'JPY': 19.11 }
+                };
+
+                // 食物热量数据库（每100克）
+                this.calorieDatabase = {
+                    '米饭': 116,
+                    '面条': 137,
+                    '苹果': 52,
+                    '香蕉': 89,
+                    '鸡蛋': 155,
+                    '牛奶': 54,
+                    '面包': 265,
+                    '土豆': 77,
+                    '西红柿': 18,
+                    '黄瓜': 16,
+                    '鸡胸肉': 165,
+                    '牛肉': 250,
+                    '猪肉': 242,
+                    '鱼肉': 206,
+                    '白菜': 17,
+                    '胡萝卜': 41,
+                    '橙子': 47,
+                    '草莓': 32,
+                    '葡萄': 69,
+                    '西瓜': 30
+                };
+
+                // 生肖数据 - 修正顺序，1900年为鼠年
+                this.zodiacAnimals = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+                this.zodiacNames = {
+                    '鼠': '子鼠', '牛': '丑牛', '虎': '寅虎', '兔': '卯兔',
+                    '龙': '辰龙', '蛇': '巳蛇', '马': '午马', '羊': '未羊',
+                    '猴': '申猴', '鸡': '酉鸡', '狗': '戌狗', '猪': '亥猪'
+                };
+
+                // 单位转换系数
+                this.conversionFactors = {
+                    // 长度转换（转为米）
+                    length: {
+                        '厘米': 0.01, 'cm': 0.01,
+                        '毫米': 0.001, 'mm': 0.001,
+                        '米': 1, 'm': 1,
+                        '千米': 1000, 'km': 1000,
+                        '英尺': 0.3048, 'ft': 0.3048,
+                        '英寸': 0.0254, 'in': 0.0254,
+                        '码': 0.9144, 'yard': 0.9144
+                    },
+                    // 重量转换（转为克）
+                    weight: {
+                        '克': 1, 'g': 1,
+                        '千克': 1000, '公斤': 1000, 'kg': 1000,
+                        '吨': 1000000, 't': 1000000,
+                        '磅': 453.592, 'lb': 453.592
+                    },
+                    // 面积转换（转为平方米）
+                    area: {
+                        '平方米': 1, '㎡': 1,
+                        '平方千米': 1000000, 'km²': 1000000,
+                        '亩': 666.67,
+                        '英亩': 4046.86
+                    },
+                    // 体积转换（转为升）
+                    volume: {
+                        '升': 1, 'l': 1,
+                        '毫升': 0.001, 'ml': 0.001,
+                        '加仑': 3.78541, 'gal': 3.78541
+                    }
+                };
+            }
+
+            async process(input) {
+                const cleanInput = this.preprocessInput(input);
+                console.log(`[DEBUG] 预处理后的输入: "${cleanInput}"`);
+                
+                if (this.cache.has(cleanInput)) {
+                    console.log(`[DEBUG] 缓存命中`);
+                    return this.cache.get(cleanInput);
+                }
+
+                console.log(`[DEBUG] 开始匹配规则，共${this.rules.length}个规则`);
+                for (const rule of this.rules) {
+                    console.log(`[DEBUG] 检查规则: ${rule.category}, 优先级: ${rule.priority}`);
+                    for (let i = 0; i < rule.patterns.length; i++) {
+                        const pattern = rule.patterns[i];
+                        console.log(`[DEBUG] 测试模式 ${i + 1}/${rule.patterns.length}: ${pattern}`);
+                        const match = cleanInput.match(pattern);
+                        if (match) {
+                            console.log(`[DEBUG] 模式匹配成功！匹配结果:`, match);
+                            try {
+                                const result = await rule.handler(match, cleanInput);
+                                if (result) {
+                                    result.category = rule.category; // 添加品类信息
+                                    this.cache.set(cleanInput, result);
+                                    console.log(`[DEBUG] 处理完成，返回结果:`, result);
+                                    return result;
+                                } else {
+                                    console.log(`[DEBUG] 处理器返回null`);
+                                }
+                            } catch (error) {
+                                console.error(`处理规则 ${rule.category} 时出错:`, error);
+                            }
+                        }
+                    }
+                }
+
+                console.log(`[DEBUG] 所有规则都未匹配`);
+                return null;
+            }
+
+            preprocessInput(input) {
+                return input.trim()
+                    .replace(/\s+/g, ' ')
+                    .replace(/[，。！？；：]/g, '');
+            }
+
+            handleMathCalculation(match, input) {
+                try {
+                    // 处理打折计算
+                    const discountMatch = input.match(/^(\d+(?:\.\d+)?)\s*打\s*(\d+(?:\.\d+)?)\s*折$/);
+                    if (discountMatch) {
+                        const [, price, discount] = discountMatch;
+                        const finalPrice = (parseFloat(price) * parseFloat(discount) / 10).toFixed(1);
+                        return { type: 'calculation', result: finalPrice };
+                    }
+
+                    const originalDiscountMatch = input.match(/^原价\s*(\d+(?:\.\d+)?)\s*打\s*(\d+(?:\.\d+)?)\s*折$/);
+                    if (originalDiscountMatch) {
+                        const [, price, discount] = originalDiscountMatch;
+                        const finalPrice = (parseFloat(price) * parseFloat(discount) / 10).toFixed(1);
+                        return { type: 'calculation', result: finalPrice };
+                    }
+
+                    // 处理百分比计算
+                    const percentMatch1 = input.match(/^(\d+(?:\.\d+)?)\s*的\s*(\d+(?:\.\d+)?)\s*%$/);
+                    if (percentMatch1) {
+                        const [, base, percent] = percentMatch1;
+                        const result = (parseFloat(base) * parseFloat(percent) / 100).toFixed(2);
+                        return { type: 'calculation', result: result };
+                    }
+
+                    const percentMatch2 = input.match(/^(\d+(?:\.\d+)?)\s*%\s*的\s*(\d+(?:\.\d+)?)$/);
+                    if (percentMatch2) {
+                        const [, percent, base] = percentMatch2;
+                        const result = (parseFloat(base) * parseFloat(percent) / 100).toFixed(2);
+                        return { type: 'calculation', result: result };
+                    }
+
+                    // 处理分期计算
+                    const installmentMatch = input.match(/^(\d+(?:\.\d+)?)\s*分期\s*(\d+)\s*期$/);
+                    if (installmentMatch) {
+                        const [, total, periods] = installmentMatch;
+                        const monthly = (parseFloat(total) / parseInt(periods)).toFixed(2);
+                        return { type: 'calculation', result: `每期${monthly}元` };
+                    }
+
+                    let expression = input;
+                    
+                    const replacements = {
+                        '加': '+',
+                        '减': '-',
+                        '乘': '*',
+                        '除': '/',
+                        '的平方根': 'sqrt',
+                        '的立方根': 'cbrt',
+                        '的平方': 'square',
+                        '的立方': 'cube'
+                    };
+
+                    for (const [chinese, symbol] of Object.entries(replacements)) {
+                        expression = expression.replace(new RegExp(chinese, 'g'), symbol);
+                    }
+
+                    if (expression.includes('sqrt')) {
+                        const num = parseFloat(expression.replace(/.*?(\d+(?:\.\d+)?).*/, '$1'));
+                        const result = Math.sqrt(num);
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+
+                    if (expression.includes('cbrt')) {
+                        const num = parseFloat(expression.replace(/.*?(\d+(?:\.\d+)?).*/, '$1'));
+                        const result = Math.cbrt(num);
+                        return { type: 'calculation', result: `= ${result.toFixed(4)}` };
+                    }
+
+                    if (expression.includes('square')) {
+                        const num = parseFloat(expression.replace(/.*?(\d+(?:\.\d+)?).*/, '$1'));
+                        const result = Math.pow(num, 2);
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+
+                    if (expression.includes('cube')) {
+                        const num = parseFloat(expression.replace(/.*?(\d+(?:\.\d+)?).*/, '$1'));
+                        const result = Math.pow(num, 3);
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+
+                    const basicMatch = expression.match(/^(\d+(?:\.\d+)?)\s*([+\-*/])\s*(\d+(?:\.\d+)?)$/);
+                    if (basicMatch) {
+                        const [, num1, operator, num2] = basicMatch;
+                        const a = parseFloat(num1);
+                        const b = parseFloat(num2);
+                        
+                        let result;
+                        switch (operator) {
+                            case '+': result = a + b; break;
+                            case '-': result = a - b; break;
+                            case '*': result = a * b; break;
+                            case '/': result = b !== 0 ? a / b : '除数不能为0'; break;
+                        }
+                        
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+                } catch (error) {
+                    return { type: 'error', result: '计算错误' };
+                }
+                
+                return null;
+            }
+
+            handleDateCalculation(match, input) {
+                const now = new Date();
+                let targetDate = new Date(now);
+
+                // 处理相对日期
+                const relativeMatch = input.match(/^(\d+)\s*(天|日|周|月|年)\s*(后|前|内)$/);
+                if (relativeMatch) {
+                    const [, amount, unit, direction] = relativeMatch;
+                    const num = parseInt(amount);
+                    
+                    if (direction === '内') {
+                        return { type: 'date', result: `从今天开始${num}${unit}内` };
+                    }
+                    
+                    const multiplier = direction === '后' ? 1 : -1;
+
+                    switch (unit) {
+                        case '天':
+                        case '日':
+                            targetDate.setDate(targetDate.getDate() + num * multiplier);
+                            break;
+                        case '周':
+                            targetDate.setDate(targetDate.getDate() + num * 7 * multiplier);
+                            break;
+                        case '月':
+                            targetDate.setMonth(targetDate.getMonth() + num * multiplier);
+                            break;
+                        case '年':
+                            targetDate.setFullYear(targetDate.getFullYear() + num * multiplier);
+                            break;
+                    }
+
+                    const year = targetDate.getFullYear();
+                    const month = targetDate.getMonth() + 1;
+                    const day = targetDate.getDate();
+                    
+                    // 如果时间跨度超过1年，显示年份
+                    const currentYear = now.getFullYear();
+                    if (year !== currentYear) {
+                        return { type: 'date', result: `（${year}年${month}月${day}日）` };
+                    } else {
+                        return { type: 'date', result: `（${month}月${day}日）` };
+                    }
+                }
+
+                // 处理快速日期
+                const specialDates = {
+                    '今天': 0,
+                    '明天': 1,
+                    '后天': 2,
+                    '大后天': 3,
+                    '昨天': -1,
+                    '前天': -2
+                };
+
+                if (specialDates.hasOwnProperty(input)) {
+                    targetDate.setDate(targetDate.getDate() + specialDates[input]);
+                    const month = targetDate.getMonth() + 1;
+                    const day = targetDate.getDate();
+                    const weekDay = ['日', '一', '二', '三', '四', '五', '六'][targetDate.getDay()];
+                    return { type: 'date', result: `（${month}月${day}日 周${weekDay}）` };
+                }
+
+                // 处理具体日期
+                const specificMatch = input.match(/^(\d+)\s*月\s*(\d+)\s*日$/);
+                if (specificMatch) {
+                    const [, month, day] = specificMatch;
+                    const targetDate = new Date(now.getFullYear(), parseInt(month) - 1, parseInt(day));
+                    const weekDay = ['日', '一', '二', '三', '四', '五', '六'][targetDate.getDay()];
+                    return { type: 'date', result: `${month}月${day}日 周${weekDay}` };
+                }
+
+                // 处理本周某天
+                const thisWeekMatch = input.match(/^本周\s*(一|二|三|四|五|六|日)$/);
+                if (thisWeekMatch) {
+                    const [, dayName] = thisWeekMatch;
+                    const dayMap = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '日': 0 };
+                    const targetDay = dayMap[dayName];
+                    const currentDay = now.getDay();
+                    const diff = targetDay - currentDay;
+                    const targetDate = new Date(now);
+                    targetDate.setDate(now.getDate() + diff);
+                    
+                    const month = targetDate.getMonth() + 1;
+                    const day = targetDate.getDate();
+                    return { type: 'date', result: `${month}月${day}日` };
+                }
+
+                // 处理距离日期计算
+                const distanceMatch = input.match(/^.*?距离\s*(\d+)\s*月\s*(\d+)\s*日\s*(还有|已过|还剩)$/);
+                if (distanceMatch) {
+                    const [, month, day, type] = distanceMatch;
+                    const targetDate = new Date(now.getFullYear(), parseInt(month) - 1, parseInt(day));
+                    const diffTime = targetDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    if (type === '还有' || type === '还剩') {
+                        return { type: 'date', result: diffDays > 0 ? `还有${diffDays}天` : `已过去${Math.abs(diffDays)}天` };
+                    } else {
+                        return { type: 'date', result: diffDays < 0 ? `已过去${Math.abs(diffDays)}天` : `还有${diffDays}天` };
+                    }
+                }
+
+                return null;
+            }
+
+            handleTimezoneQuery(match, input) {
+                const cityMatch = input.match(/^([\u4e00-\u9fa5]+|[A-Za-z]+)\s*时间$/);
+                if (cityMatch) {
+                    const city = cityMatch[1];
+                    const timezone = this.timezoneMap[city];
+                    
+                    if (timezone) {
+                        const time = new Intl.DateTimeFormat('zh-CN', {
+                            timeZone: timezone,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        }).format(new Date());
+                        
+                        return { type: 'timezone', result: `（${time}）` };
+                    }
+                }
+
+                // 处理"现在XX时间"格式
+                const nowCityMatch = input.match(/^现在\s*([\u4e00-\u9fa5]+|[A-Za-z]+)\s*(几点|时间)$/);
+                if (nowCityMatch) {
+                    const city = nowCityMatch[1];
+                    const timezone = this.timezoneMap[city];
+                    
+                    if (timezone) {
+                        const time = new Intl.DateTimeFormat('zh-CN', {
+                            timeZone: timezone,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        }).format(new Date());
+                        
+                        return { type: 'timezone', result: `${time}` };
+                    }
+                }
+
+                // 处理"XX现在几点"格式
+                const cityNowMatch = input.match(/^([\u4e00-\u9fa5]+|[A-Za-z]+)\s*现在\s*(几点|时间)$/);
+                if (cityNowMatch) {
+                    const city = cityNowMatch[1];
+                    const timezone = this.timezoneMap[city];
+                    
+                    if (timezone) {
+                        const time = new Intl.DateTimeFormat('zh-CN', {
+                            timeZone: timezone,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        }).format(new Date());
+                        
+                        return { type: 'timezone', result: time };
+                    }
+                }
+
+                return null;
+            }
+
+            handleUnitConversion(match, input) {
+                // 温度转换
+                const tempMatch = input.match(/^(\d+(?:\.\d+)?)\s*(摄氏度|华氏度|℃|℉)/);
+                if (tempMatch) {
+                    const [, value, unit] = tempMatch;
+                    const num = parseFloat(value);
+
+                    if (unit === '摄氏度' || unit === '℃') {
+                        const fahrenheit = (num * 9/5 + 32).toFixed(1);
+                        return { type: 'conversion', result: `${fahrenheit}华氏度` };
+                    } else if (unit === '华氏度' || unit === '℉') {
+                        const celsius = ((num - 32) * 5/9).toFixed(1);
+                        return { type: 'conversion', result: `${celsius}摄氏度` };
+                    }
+                }
+
+                // 长度转换
+                const lengthMatch = input.match(/^(\d+(?:\.\d+)?)\s*(米|厘米|毫米|千米|英尺|英寸|码|m|cm|mm|km|ft|in|yard)/);
+                if (lengthMatch) {
+                    const [, value, unit] = lengthMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.length[unit];
+                    
+                    if (factor) {
+                        const meters = num * factor;
+                        if (unit === '米' || unit === 'm') {
+                            const feet = (meters * 3.28084).toFixed(2);
+                            const cm = (meters * 100).toFixed(0);
+                            return { type: 'conversion', result: `${feet}英尺 / ${cm}厘米` };
+                        } else if (unit === '厘米' || unit === 'cm') {
+                            const inches = (meters * 39.3701).toFixed(2);
+                            return { type: 'conversion', result: `${inches}英寸` };
+                        } else if (unit === '英尺' || unit === 'ft') {
+                            const meters_result = (meters).toFixed(2);
+                            return { type: 'conversion', result: `${meters_result}米` };
+                        }
+                    }
+                }
+
+                // 重量转换
+                const weightMatch = input.match(/^(\d+(?:\.\d+)?)\s*(公斤|千克|克|磅|吨|kg|g|lb|t)/);
+                if (weightMatch) {
+                    const [, value, unit] = weightMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.weight[unit];
+                    
+                    if (factor) {
+                        const grams = num * factor;
+                        if (unit === '公斤' || unit === '千克' || unit === 'kg') {
+                            const pounds = (grams / 453.592).toFixed(2);
+                            return { type: 'conversion', result: `${pounds}磅` };
+                        } else if (unit === '磅' || unit === 'lb') {
+                            const kg = (grams / 1000).toFixed(2);
+                            return { type: 'conversion', result: `${kg}公斤` };
+                        } else if (unit === '克' || unit === 'g') {
+                            const kg = (grams / 1000).toFixed(3);
+                            return { type: 'conversion', result: `${kg}公斤` };
+                        }
+                    }
+                }
+
+                // 面积转换
+                const areaMatch = input.match(/^(\d+(?:\.\d+)?)\s*(平方米|平方千米|亩|英亩|㎡|km²)/);
+                if (areaMatch) {
+                    const [, value, unit] = areaMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.area[unit];
+                    
+                    if (factor) {
+                        const sqm = num * factor;
+                        if (unit === '平方米' || unit === '㎡') {
+                            const acres = (sqm / 4046.86).toFixed(4);
+                            return { type: 'conversion', result: `${acres}英亩` };
+                        } else if (unit === '亩') {
+                            const sqm_result = (sqm).toFixed(0);
+                            return { type: 'conversion', result: `${sqm_result}平方米` };
+                        }
+                    }
+                }
+
+                // 体积转换
+                const volumeMatch = input.match(/^(\d+(?:\.\d+)?)\s*(升|毫升|加仑|l|ml|gal)/);
+                if (volumeMatch) {
+                    const [, value, unit] = volumeMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.volume[unit];
+                    
+                    if (factor) {
+                        const liters = num * factor;
+                        if (unit === '升' || unit === 'l') {
+                            const gallons = (liters / 3.78541).toFixed(2);
+                            return { type: 'conversion', result: `${gallons}加仑` };
+                        } else if (unit === '毫升' || unit === 'ml') {
+                            const liters_result = (liters).toFixed(3);
+                            return { type: 'conversion', result: `${liters_result}升` };
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            handleCurrencyConversion(match, input) {
+                const currencyMatch = input.match(/^(\d+(?:\.\d+)?)\s*(美元|人民币|欧元|英镑|日元|港币|USD|CNY|EUR|GBP|JPY|HKD)$/);
+                if (currencyMatch) {
+                    const [, amount, currency] = currencyMatch;
+                    const num = parseFloat(amount);
+
+                    const currencyMap = {
+                        '美元': 'USD',
+                        '人民币': 'CNY', 
+                        '欧元': 'EUR',
+                        '英镑': 'GBP',
+                        '日元': 'JPY',
+                        '港币': 'HKD'
+                    };
+
+                    const fromCurrency = currencyMap[currency] || currency;
+                    
+                    if (fromCurrency === 'USD') {
+                        const cnyAmount = (num * this.exchangeRates.USD.CNY).toFixed(4);
+                        return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                    } else if (fromCurrency === 'CNY') {
+                        const usdAmount = (num * this.exchangeRates.CNY.USD).toFixed(4);
+                        return { type: 'currency', result: `（${usdAmount} 美元）` };
+                    } else if (fromCurrency === 'EUR') {
+                        const cnyAmount = (num * this.exchangeRates.EUR.CNY).toFixed(4);
+                        return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                    } else if (fromCurrency === 'GBP') {
+                        const cnyAmount = (num * this.exchangeRates.GBP.CNY).toFixed(4);
+                        return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                    } else if (fromCurrency === 'JPY') {
+                        const cnyAmount = (num * this.exchangeRates.JPY.CNY).toFixed(4);
+                        return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                    } else if (fromCurrency === 'HKD') {
+                        const cnyAmount = (num * this.exchangeRates.HKD.CNY).toFixed(4);
+                        return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                    }
+                }
+
+                return null;
+            }
+
+            handleFormulaQuery(match, input) {
+                // 提取关键词
+                let keyword = null;
+                
+                // 匹配物理定律
+                const physicsMatch = input.match(/.*?(牛顿第[一二三]定律|欧姆定律|万有引力定律|能量守恒定律).*/);
+                if (physicsMatch) keyword = physicsMatch[1];
+                
+                // 匹配数学公式
+                const mathMatch = input.match(/.*?(勾股定理|二次方程|圆的面积公式|球的体积公式).*/);
+                if (mathMatch) keyword = mathMatch[1];
+                
+                // 匹配化学分子式
+                const chemMatch = input.match(/.*?(水|二氧化碳|氧气|甲烷|乙醇)的?(?:分子式|化学式).*/);
+                if (chemMatch) {
+                    const substance = chemMatch[1];
+                    if (substance === '水') keyword = '水的分子式';
+                    else if (substance === '二氧化碳') keyword = '二氧化碳';
+                    else if (substance === '氧气') keyword = '氧气的化学式';
+                    else if (substance === '甲烷') keyword = '甲烷';
+                    else if (substance === '乙醇') keyword = '乙醇';
+                }
+                
+                // 匹配物理常数
+                const constantMatch = input.match(/.*?(光速|声速|重力加速度|普朗克常数).*/);
+                if (constantMatch) keyword = constantMatch[1];
+                
+                if (keyword && this.formulaDatabase[keyword]) {
+                    return { type: 'formula', result: this.formulaDatabase[keyword] };
+                }
+                
+                return null;
+            }
+
+            handleCalorieQuery(match, input) {
+                // 检查是否包含热量查询的否定词汇，如果包含则不触发
+                const negativeWords = ['不太高', '不高', '很低', '比较低', '不多', '不少', '还好', '一般', '不算'];
+                const hasNegative = negativeWords.some(word => input.includes(word));
+                if (hasNegative) {
+                    return null;
+                }
+
+                // 处理明确的热量查询，如"我吃了100克米饭，热量"
+                const explicitMatch = input.match(/^.*?(\d+)\s*克?\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)[，,]?\s*热量$/);
+                if (explicitMatch) {
+                    const [, weight, food] = explicitMatch;
+                    const baseCalorie = this.calorieDatabase[food];
+                    if (baseCalorie) {
+                        const totalCalorie = Math.round(baseCalorie * parseInt(weight) / 100);
+                        return { type: 'calorie', result: `${totalCalorie}千卡` };
+                    }
+                }
+
+                // 处理"XXX克XXX热量"格式
+                const weightCalorieMatch = input.match(/^(\d+)\s*克\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/);
+                if (weightCalorieMatch) {
+                    const [, weight, food] = weightCalorieMatch;
+                    const baseCalorie = this.calorieDatabase[food];
+                    if (baseCalorie) {
+                        const totalCalorie = Math.round(baseCalorie * parseInt(weight) / 100);
+                        return { type: 'calorie', result: `${totalCalorie}千卡` };
+                    }
+                }
+
+                // 处理带g单位的查询
+                const gWeightMatch = input.match(/^(\d+)\s*g\s*(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/);
+                if (gWeightMatch) {
+                    const [, weight, food] = gWeightMatch;
+                    const baseCalorie = this.calorieDatabase[food];
+                    if (baseCalorie) {
+                        const totalCalorie = Math.round(baseCalorie * parseInt(weight) / 100);
+                        return { type: 'calorie', result: `${totalCalorie}千卡` };
+                    }
+                }
+
+                // 处理不带重量的热量查询（默认100克）
+                const foodMatch = input.match(/^(米饭|面条|苹果|香蕉|鸡蛋|牛奶|面包|土豆|西红柿|黄瓜|鸡胸肉|牛肉|猪肉|鱼肉|白菜|胡萝卜|橙子|草莓|葡萄|西瓜)\s*热量$/);
+                if (foodMatch) {
+                    const [, food] = foodMatch;
+                    const calorie = this.calorieDatabase[food];
+                    if (calorie) {
+                        return { type: 'calorie', result: `${calorie}千卡/100克` };
+                    }
+                }
+
+                return null;
+            }
+
+            handleZodiacQuery(match, input) {
+                // 处理年份查询生肖
+                const yearMatch = input.match(/^(\d{4})\s*年?\s*属\s*什么?$/);
+                if (yearMatch) {
+                    const [, year] = yearMatch;
+                    const yearNum = parseInt(year);
+                    // 1900年是鼠年（索引0），所以计算公式是 (year - 1900) % 12
+                    const zodiacIndex = (yearNum - 1900) % 12;
+                    const zodiac = this.zodiacAnimals[zodiacIndex];
+                    return { type: 'zodiac', result: zodiac };
+                }
+
+                const yearMatch2 = input.match(/^(\d{4})\s*属\s*什么?$/);
+                if (yearMatch2) {
+                    const [, year] = yearMatch2;
+                    const yearNum = parseInt(year);
+                    const zodiacIndex = (yearNum - 1900) % 12;
+                    const zodiac = this.zodiacAnimals[zodiacIndex];
+                    return { type: 'zodiac', result: zodiac };
+                }
+
+                // 处理生肖查询年份
+                const animalMatch = input.match(/.*?属\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪)\s*的\s*年份.*/);
+                if (animalMatch) {
+                    const [, animal] = animalMatch;
+                    const currentYear = new Date().getFullYear();
+                    const animalIndex = this.zodiacAnimals.indexOf(animal);
+                    if (animalIndex !== -1) {
+                        // 找到最近的几个年份
+                        const years = [];
+                        // 计算基准年（最近的该生肖年份）
+                        const baseYear = currentYear - ((currentYear - 1900 - animalIndex) % 12);
+                        for (let i = -2; i <= 2; i++) {
+                            const year = baseYear + i * 12;
+                            if (year > 1900 && year < 2100) {
+                                years.push(year);
+                            }
+                        }
+                        return { type: 'zodiac', result: years.sort().join('、') + '年' };
+                    }
+                }
+
+                const zodiacNameMatch = input.match(/.*?生肖\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪).*/);
+                if (zodiacNameMatch) {
+                    const [, animal] = zodiacNameMatch;
+                    const fullName = this.zodiacNames[animal];
+                    return { type: 'zodiac', result: fullName };
+                }
+
+                return null;
+            }
+
+            formatOutput(result) {
+                if (!result) return '';
+                
+                switch (result.type) {
+                    case 'calculation':
+                        return result.result;
+                    case 'date':
+                    case 'timezone':
+                    case 'currency':
+                        return result.result;
+                    case 'conversion':
+                        return result.result;
+                    case 'formula':
+                        return result.result;
+                    default:
+                        return result.result || '';
+                }
+            }
+        }
+
+        // 全局变量
+        const smartCompletion = new ChineseSmartCompletion();
+        let history = JSON.parse(localStorage.getItem('completionHistory') || '[]');
+
+        // 页面加载时恢复历史记录
+        window.onload = function() {
+            displayHistory();
+            
+            // 实时输入处理
+            let inputTimer = null;
+            document.getElementById('userInput').addEventListener('input', function(e) {
+                clearTimeout(inputTimer);
+                const value = e.target.value.trim();
+                
+                // 对于简单表达式立即处理
+                if (value && value.match(/^\d+[+\-*/]\d+$/)) {
+                    realTimeProcess();
+                } else {
+                    // 其他情况使用防抖
+                    inputTimer = setTimeout(realTimeProcess, 100);
+                }
+            });
+
+            // 回车键触发处理
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processInput();
+                }
+            });
+        };
+
+        // Tab切换功能
+        function switchTab(tabId) {
+            // 移除所有活跃状态
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            
+            // 激活当前tab
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        // 设置输入内容
+        function setInput(text) {
+            document.getElementById('userInput').value = text;
+            document.getElementById('userInput').focus();
+            realTimeProcess(); // 设置内容后立即处理
+        }
+
+        // 调试日志功能
+        function addDebugLog(message, data = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            
+            if (data) {
+                console.log(logEntry, data);
+            } else {
+                console.log(logEntry);
+            }
+            
+            // 在页面显示调试信息
+            let debugContainer = document.getElementById('debug-container');
+            if (!debugContainer) {
+                debugContainer = document.createElement('div');
+                debugContainer.id = 'debug-container';
+                debugContainer.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    width: 300px;
+                    max-height: 200px;
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    font-size: 11px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    overflow-y: auto;
+                    z-index: 1000;
+                    display: none;
+                `;
+                document.body.appendChild(debugContainer);
+            }
+            
+            const logDiv = document.createElement('div');
+            logDiv.textContent = logEntry;
+            debugContainer.insertBefore(logDiv, debugContainer.firstChild);
+            
+            // 保持最新10条日志
+            while (debugContainer.children.length > 10) {
+                debugContainer.removeChild(debugContainer.lastChild);
+            }
+        }
+
+        // 切换调试面板显示/隐藏
+        function toggleDebug() {
+            const debugContainer = document.getElementById('debug-container');
+            if (debugContainer) {
+                debugContainer.style.display = debugContainer.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        // 实时处理函数
+        async function realTimeProcess() {
+            const input = document.getElementById('userInput').value.trim();
+            const resultElement = document.getElementById('result');
+            
+            addDebugLog(`输入内容: "${input}"`);
+            
+            if (!input) {
+                resultElement.innerHTML = '<div class="result-empty">在上方输入内容，查看智能续写结果</div>';
+                addDebugLog('输入为空，显示提示');
+                return;
+            }
+
+            try {
+                addDebugLog('开始处理输入...');
+                // 实时处理输入 - 正确处理异步操作
+                const result = await smartCompletion.process(input);
+                addDebugLog('处理结果:', result);
+                
+                const output = smartCompletion.formatOutput(result);
+                addDebugLog('格式化输出:', output);
+                
+                if (output && result) {
+                    const categoryNames = {
+                        'math': '🔢 数学计算',
+                        'date': '📅 日期时间', 
+                        'timezone': '🌍 时区查询',
+                        'unit': '🔄 单位转换',
+                        'currency': '💰 汇率换算',
+                        'formula': '📐 公式定律',
+                        'calorie': '🍎 热量查询',
+                        'zodiac': '🐲 生肖查询'
+                    };
+                    
+                    const categoryName = categoryNames[result.category || result.type] || '🤖 智能识别';
+                    const fullOutput = input + output;
+                    
+                    addDebugLog(`匹配成功! 类别: ${result.category || result.type}`);
+                    
+                    resultElement.innerHTML = `
+                        <div class="result-success">
+                            <div class="result-category">${categoryName}</div>
+                            <div class="result-content">${fullOutput}</div>
+                        </div>
+                    `;
+                } else {
+                    addDebugLog('无匹配结果，显示输入中状态');
+                    resultElement.innerHTML = `<span class="result-pending">输入中... "${input}"</span>`;
+                }
+            } catch (error) {
+                addDebugLog(`处理错误: ${error.message}`);
+                resultElement.innerHTML = `<span class="result-error">处理出错：${error.message}</span>`;
+            }
+        }
+
+        // 处理输入
+        async function processInput() {
+            const input = document.getElementById('userInput').value.trim();
+            if (!input) {
+                alert('请输入要测试的内容');
+                return;
+            }
+
+            // 显示加载状态
+            showLoading();
+
+            try {
+                // 处理输入
+                const result = await smartCompletion.process(input);
+                const output = smartCompletion.formatOutput(result);
+                
+                // 显示结果
+                const resultElement = document.getElementById('result');
+                if (output) {
+                    const fullOutput = input + output;
+                    resultElement.innerHTML = `<span class="result-success">${fullOutput}</span>`;
+                    
+                    // 添加到历史记录
+                    addToHistory(input, fullOutput);
+                } else {
+                    resultElement.innerHTML = `<span class="result-error">暂不支持此类型的内容："${input}"</span>`;
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<span class="result-error">处理出错：${error.message}</span>`;
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            document.querySelector('.loading').style.display = 'block';
+            document.getElementById('result').style.opacity = '0.3';
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            document.querySelector('.loading').style.display = 'none';
+            document.getElementById('result').style.opacity = '1';
+        }
+
+        // 清空所有
+        function clearAll() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('result').innerHTML = '<div class="result-empty">在上方输入内容，点击"智能续写"按钮查看结果</div>';
+            document.getElementById('userInput').focus();
+        }
+
+        // 添加到历史记录
+        function addToHistory(input, output) {
+            const historyItem = {
+                input: input,
+                output: output,
+                timestamp: new Date().toLocaleString('zh-CN')
+            };
+            
+            history.unshift(historyItem);
+            if (history.length > 20) {
+                history = history.slice(0, 20);
+            }
+            
+            localStorage.setItem('completionHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        // 显示历史记录
+        function displayHistory() {
+            const container = document.getElementById('historyContainer');
+            
+            if (history.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #64748b; padding: 20px;">暂无测试记录</div>';
+                return;
+            }
+
+            container.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="history-input">输入：${item.input}</div>
+                    <div class="history-output">输出：${item.output}</div>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 5px;">${item.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        // 清空历史记录
+        function clearHistory() {
+            if (confirm('确定要清空所有历史记录吗？')) {
+                history = [];
+                localStorage.removeItem('completionHistory');
+                displayHistory();
+            }
+        }
+    </script>
+</body>
+</html> 

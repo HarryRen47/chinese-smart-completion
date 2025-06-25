@@ -57,7 +57,7 @@
 
 ## 🚀 在线体验
 
-**访问地址：** [https://你的用户名.github.io/chinese-smart-completion](https://你的用户名.github.io/chinese-smart-completion)
+**访问地址：** [https://harryren47.github.io/chinese-smart-completion](https://harryren47.github.io/chinese-smart-completion)
 
 ## 📖 使用方法
 
@@ -96,7 +96,7 @@
 
 1. 克隆项目：
 ```bash
-git clone https://github.com/你的用户名/chinese-smart-completion.git
+git clone https://github.com/HarryRen47/chinese-smart-completion.git
 cd chinese-smart-completion
 ```
 

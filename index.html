@@ -364,6 +364,7 @@
                     <button class="tab-btn" onclick="switchTab('formula')">📐 公式定律</button>
                     <button class="tab-btn" onclick="switchTab('calorie')">🍎 热量查询</button>
                     <button class="tab-btn" onclick="switchTab('zodiac')">🐲 生肖查询</button>
+                    <button class="tab-btn" onclick="switchTab('constellation')">⭐ 星座查询</button>
                 </div>
                 
                 <div class="tab-content">
@@ -565,6 +566,25 @@
                             <div class="example-btn" onclick="setInput('生肖兔')">生肖兔</div>
                         </div>
                     </div>
+
+                    <div id="tab-constellation" class="tab-panel">
+                        <div class="examples">
+                            <!-- 日期查星座 -->
+                            <div class="example-btn" onclick="setInput('6月24日是什么星座')">6月24日是什么星座</div>
+                            <div class="example-btn" onclick="setInput('我是8月15日生什么星座')">我是8月15日生什么星座</div>
+                            <div class="example-btn" onclick="setInput('3.21星座')">3.21星座</div>
+                            <div class="example-btn" onclick="setInput('12/25什么星座')">12/25什么星座</div>
+                            <div class="example-btn" onclick="setInput('今天什么星座')">今天什么星座</div>
+                            <div class="example-btn" onclick="setInput('明天星座')">明天星座</div>
+                            <!-- 星座查日期 -->
+                            <div class="example-btn" onclick="setInput('狮子座日期')">狮子座日期</div>
+                            <div class="example-btn" onclick="setInput('双子座什么时候')">双子座什么时候</div>
+                            <div class="example-btn" onclick="setInput('天蝎座时间')">天蝎座时间</div>
+                            <div class="example-btn" onclick="setInput('白羊座日期')">白羊座日期</div>
+                            <div class="example-btn" onclick="setInput('水瓶座什么时候')">水瓶座什么时候</div>
+                            <div class="example-btn" onclick="setInput('摩羯座时间')">摩羯座时间</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -631,7 +651,14 @@
                             /^.*?原价\s*(\d+(?:\.\d+)?)\s*打\s*(\d+(?:\.\d+)?)\s*折$/,
                             /^.*?(\d+(?:\.\d+)?)\s*的\s*(\d+(?:\.\d+)?)\s*%$/,
                             /^.*?(\d+(?:\.\d+)?)\s*%\s*的\s*(\d+(?:\.\d+)?)$/,
-                            /^.*?(\d+(?:\.\d+)?)\s*分期\s*(\d+)\s*期$/
+                            /^.*?(\d+(?:\.\d+)?)\s*分期\s*(\d+)\s*期$/,
+                            // 新增科学计算
+                            /^.*?(\d+(?:\.\d+)?)\s*的?\s*(阶乘|!)$/,
+                            /^.*?(sin|cos|tan|sinh|cosh|tanh)\s*(\d+(?:\.\d+)?)$/,
+                            /^.*?(log|ln|lg)\s*(\d+(?:\.\d+)?)$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*的\s*(\d+(?:\.\d+)?)\s*次方$/,
+                            /^.*?e\s*的\s*(\d+(?:\.\d+)?)\s*次方$/,
+                            /^.*?(\d+)\s*进制转\s*(\d+)\s*进制\s*(\d+)$/
                         ],
                         handler: this.handleMathCalculation.bind(this)
                     },
@@ -645,7 +672,13 @@
                             /^.*?(\d+)\s*月\s*(\d+)\s*日$/,
                             /^.*?(\d{4})\s*年\s*(\d+)\s*月\s*(\d+)\s*日$/,
                             /^.*?距离\s*(\d+)\s*月\s*(\d+)\s*日\s*(还有|已过|还剩)$/,
-                            /^.*?本周\s*(一|二|三|四|五|六|日)$/
+                            /^.*?本周\s*(一|二|三|四|五|六|日)$/,
+                            // 新增农历和节假日
+                            /^.*?(今天|明天|昨天)\s*农历[？?]?$/,
+                            /^.*?农历\s*(\d+)\s*月\s*(\d+)\s*日$/,
+                            /^.*?(春节|清明节|劳动节|端午节|中秋节|国庆节)\s*(是哪天|什么时候)[？?]?$/,
+                            /^.*?下个?\s*(春节|清明节|劳动节|端午节|中秋节|国庆节)[？?]?$/,
+                            /^.*?(\d{4})\s*年\s*(春节|清明节|劳动节|端午节|中秋节|国庆节)[？?]?$/
                         ],
                         handler: this.handleDateCalculation.bind(this)
                     },
@@ -668,7 +701,11 @@
                             /^.*?(\d+(?:\.\d+)?)\s*(米|厘米|毫米|千米|英尺|英寸|码|m|cm|mm|km|ft|in|yard)(?:\s*地?)?\s*(等于|转换为|转成)?[？?]?$/,
                             /^.*?(\d+(?:\.\d+)?)\s*(公斤|千克|克|磅|吨|kg|g|lb|t)\s*(等于|转换为|转成)?[？?]?$/,
                             /^.*?(\d+(?:\.\d+)?)\s*(平方米|平方千米|亩|英亩|㎡|km²)(?:\s*地?)?\s*(等于|转换为|转成)?[？?]?$/,
-                            /^.*?(\d+(?:\.\d+)?)\s*(升|毫升|加仑|l|ml|gal)\s*(等于|转换为|转成)?[？?]?$/
+                            /^.*?(\d+(?:\.\d+)?)\s*(升|毫升|加仑|l|ml|gal)\s*(等于|转换为|转成)?[？?]?$/,
+                            // 新增能量和功率单位
+                            /^.*?(\d+(?:\.\d+)?)\s*(千焦|焦耳|卡路里|千卡|瓦时|千瓦时|kJ|J|cal|kcal|Wh|kWh)\s*(等于|转换为|转成)?[？?]?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(瓦|千瓦|马力|兆瓦|W|kW|MW|hp)\s*(等于|转换为|转成)?[？?]?$/,
+                            /^.*?(\d+(?:\.\d+)?)\s*(帕|千帕|兆帕|毫米汞柱|大气压|Pa|kPa|MPa|mmHg|atm|bar)\s*(等于|转换为|转成)?[？?]?$/
                         ],
                         handler: this.handleUnitConversion.bind(this)
                     },
@@ -688,7 +725,16 @@
                             /^.*?(牛顿第[一二三]定律|欧姆定律|万有引力定律|能量守恒定律)(?:是什么?)?[？?]?$/,
                             /^.*?(勾股定理|二次方程|圆的面积公式|球的体积公式)(?:是什么?)?[？?]?$/,
                             /^.*?(水|二氧化碳|氧气|甲烷|乙醇)的?(?:分子式|化学式)(?:是什么?)?[？?]?$/,
-                            /^(?:.*?)(光速|声速|重力加速度|普朗克常数)(?:是多少?|是什么?)?[？?]?$/
+                            /^(?:.*?)(光速|声速|重力加速度|普朗克常数)(?:是多少?|是什么?)?[？?]?$/,
+                            // 新增经济公式
+                            /^.*?(复利公式|单利公式|现值公式|终值公式|年金公式)(?:是什么?)?[？?]?$/,
+                            /^.*?(GDP|通胀率|利率|汇率|市盈率|ROI|ROE|EBITDA)(?:是什么?|如何计算?)?[？?]?$/,
+                            /^.*?(供求曲线|边际成本|边际收益|弹性系数)(?:是什么?)?[？?]?$/,
+                            // 新增生物公式
+                            /^.*?(DNA|RNA|ATP|ADP|蛋白质|氨基酸)(?:分子式|结构式)?(?:是什么?)?[？?]?$/,
+                            /^.*?(光合作用|呼吸作用|蛋白质合成)(?:公式|方程式)?(?:是什么?)?[？?]?$/,
+                            /^.*?(细胞分裂|基因表达|酶催化)(?:公式|机制)?(?:是什么?)?[？?]?$/,
+                            /^.*?(种群增长|生态系统|食物链)(?:模型|公式)?(?:是什么?)?[？?]?$/
                         ],
                         handler: this.handleFormulaQuery.bind(this)
                     },
@@ -716,6 +762,19 @@
                             /^.*?生肖\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪)[？?]?$/
                         ],
                         handler: this.handleZodiacQuery.bind(this)
+                    },
+                    {
+                        category: 'constellation',
+                        priority: 9,
+                        patterns: [
+                            /^.*?(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(是什么星座|星座)[？?]?$/,
+                            /^.*?(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(是什么星座|星座)[？?]?$/,
+                            /^.*?(白羊座|金牛座|双子座|巨蟹座|狮子座|处女座|天秤座|天蝎座|射手座|摩羯座|水瓶座|双鱼座)\s*(日期|时间|什么时候)[？?]?$/,
+                            /^.*?(今天|明天|昨天)\s*(什么星座|星座)[？?]?$/,
+                            /^.*?我是\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(生|出生)[，,]?\s*(什么星座|星座)[？?]?$/,
+                            /^.*?(\d{1,2})\s*[月./]\s*(\d{1,2})\s*[日号]?\s*(什么星座|星座)[？?]?$/
+                        ],
+                        handler: this.handleConstellationQuery.bind(this)
                     }
                 ];
             }
@@ -760,7 +819,28 @@
                     '光速': '299,792,458 m/s',
                     '声速': '343 m/s（20°C空气中）',
                     '重力加速度': '9.8 m/s²',
-                    '普朗克常数': '6.626×10⁻³⁴ J·s'
+                    '普朗克常数': '6.626×10⁻³⁴ J·s',
+                    // 经济公式
+                    '复利公式': 'A = P(1 + r)ⁿ',
+                    '单利公式': 'A = P(1 + rt)',
+                    '现值公式': 'PV = FV / (1 + r)ⁿ',
+                    '终值公式': 'FV = PV × (1 + r)ⁿ',
+                    '年金公式': 'PMT = PV × [r(1+r)ⁿ] / [(1+r)ⁿ-1]',
+                    'GDP': '国内生产总值 = C + I + G + (X - M)',
+                    '通胀率': '通胀率 = (本期CPI - 上期CPI) / 上期CPI × 100%',
+                    '市盈率': 'P/E = 股价 / 每股收益',
+                    'ROI': 'ROI = (投资收益 - 投资成本) / 投资成本 × 100%',
+                    'ROE': 'ROE = 净利润 / 股东权益 × 100%',
+                    'EBITDA': 'EBITDA = 净利润 + 利息 + 税收 + 折旧 + 摊销',
+                    // 生物公式
+                    'DNA': '脱氧核糖核酸，双螺旋结构',
+                    'RNA': '核糖核酸，单链结构',
+                    'ATP': '腺苷三磷酸，C₁₀H₁₆N₅O₁₃P₃',
+                    'ADP': '腺苷二磷酸，C₁₀H₁₅N₅O₁₀P₂',
+                    '光合作用': '6CO₂ + 6H₂O + 光能 → C₆H₁₂O₆ + 6O₂',
+                    '呼吸作用': 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP',
+                    '蛋白质合成': 'DNA → mRNA → 蛋白质',
+                    '种群增长': 'dN/dt = rN(1 - N/K)'
                 };
 
                 // 汇率数据
@@ -805,6 +885,42 @@
                     '猴': '申猴', '鸡': '酉鸡', '狗': '戌狗', '猪': '亥猪'
                 };
 
+                // 星座数据
+                this.constellations = [
+                    { name: '水瓶座', start: [1, 20], end: [2, 18], element: '风象', planet: '天王星' },
+                    { name: '双鱼座', start: [2, 19], end: [3, 20], element: '水象', planet: '海王星' },
+                    { name: '白羊座', start: [3, 21], end: [4, 19], element: '火象', planet: '火星' },
+                    { name: '金牛座', start: [4, 20], end: [5, 20], element: '土象', planet: '金星' },
+                    { name: '双子座', start: [5, 21], end: [6, 21], element: '风象', planet: '水星' },
+                    { name: '巨蟹座', start: [6, 22], end: [7, 22], element: '水象', planet: '月亮' },
+                    { name: '狮子座', start: [7, 23], end: [8, 22], element: '火象', planet: '太阳' },
+                    { name: '处女座', start: [8, 23], end: [9, 22], element: '土象', planet: '水星' },
+                    { name: '天秤座', start: [9, 23], end: [10, 23], element: '风象', planet: '金星' },
+                    { name: '天蝎座', start: [10, 24], end: [11, 22], element: '水象', planet: '冥王星' },
+                    { name: '射手座', start: [11, 23], end: [12, 21], element: '火象', planet: '木星' },
+                    { name: '摩羯座', start: [12, 22], end: [1, 19], element: '土象', planet: '土星' }
+                ];
+
+                // 节假日数据
+                this.holidays = {
+                    2024: {
+                        '春节': '2024-02-10',
+                        '清明节': '2024-04-05',
+                        '劳动节': '2024-05-01',
+                        '端午节': '2024-06-10',
+                        '中秋节': '2024-09-17',
+                        '国庆节': '2024-10-01'
+                    },
+                    2025: {
+                        '春节': '2025-01-29',
+                        '清明节': '2025-04-05',
+                        '劳动节': '2025-05-01',
+                        '端午节': '2025-05-31',
+                        '中秋节': '2025-10-06',
+                        '国庆节': '2025-10-01'
+                    }
+                };
+
                 // 单位转换系数
                 this.conversionFactors = {
                     // 长度转换（转为米）
@@ -836,6 +952,31 @@
                         '升': 1, 'l': 1,
                         '毫升': 0.001, 'ml': 0.001,
                         '加仑': 3.78541, 'gal': 3.78541
+                    },
+                    // 能量转换（转为焦耳）
+                    energy: {
+                        '焦耳': 1, 'J': 1,
+                        '千焦': 1000, 'kJ': 1000,
+                        '卡路里': 4.184, 'cal': 4.184,
+                        '千卡': 4184, 'kcal': 4184,
+                        '瓦时': 3600, 'Wh': 3600,
+                        '千瓦时': 3600000, 'kWh': 3600000
+                    },
+                    // 功率转换（转为瓦）
+                    power: {
+                        '瓦': 1, 'W': 1,
+                        '千瓦': 1000, 'kW': 1000,
+                        '兆瓦': 1000000, 'MW': 1000000,
+                        '马力': 745.7, 'hp': 745.7
+                    },
+                    // 压力转换（转为帕斯卡）
+                    pressure: {
+                        '帕': 1, 'Pa': 1,
+                        '千帕': 1000, 'kPa': 1000,
+                        '兆帕': 1000000, 'MPa': 1000000,
+                        '毫米汞柱': 133.322, 'mmHg': 133.322,
+                        '大气压': 101325, 'atm': 101325,
+                        'bar': 100000
                     }
                 };
             }
@@ -966,6 +1107,84 @@
                         return { type: 'calculation', result: `= ${result}` };
                     }
 
+                    // 处理阶乘
+                    const factorialMatch = input.match(/^(\d+(?:\.\d+)?)\s*的?\s*(阶乘|!)$/);
+                    if (factorialMatch) {
+                        const num = parseInt(factorialMatch[1]);
+                        if (num > 20) return { type: 'calculation', result: '数字太大，无法计算阶乘' };
+                        let result = 1;
+                        for (let i = 2; i <= num; i++) {
+                            result *= i;
+                        }
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+
+                    // 处理三角函数
+                    const trigMatch = input.match(/^(sin|cos|tan|sinh|cosh|tanh)\s*(\d+(?:\.\d+)?)$/);
+                    if (trigMatch) {
+                        const [, func, num] = trigMatch;
+                        const radians = parseFloat(num) * Math.PI / 180; // 转换为弧度
+                        let result;
+                        switch (func) {
+                            case 'sin': result = Math.sin(radians); break;
+                            case 'cos': result = Math.cos(radians); break;
+                            case 'tan': result = Math.tan(radians); break;
+                            case 'sinh': result = Math.sinh(radians); break;
+                            case 'cosh': result = Math.cosh(radians); break;
+                            case 'tanh': result = Math.tanh(radians); break;
+                        }
+                        return { type: 'calculation', result: `= ${result.toFixed(6)}` };
+                    }
+
+                    // 处理对数
+                    const logMatch = input.match(/^(log|ln|lg)\s*(\d+(?:\.\d+)?)$/);
+                    if (logMatch) {
+                        const [, func, num] = logMatch;
+                        const value = parseFloat(num);
+                        if (value <= 0) return { type: 'calculation', result: '对数的真数必须大于0' };
+                        let result;
+                        switch (func) {
+                            case 'ln': result = Math.log(value); break;
+                            case 'lg': result = Math.log10(value); break;
+                            case 'log': result = Math.log10(value); break; // 默认为常用对数
+                        }
+                        return { type: 'calculation', result: `= ${result.toFixed(6)}` };
+                    }
+
+                    // 处理指数
+                    const powerMatch = input.match(/^(\d+(?:\.\d+)?)\s*的\s*(\d+(?:\.\d+)?)\s*次方$/);
+                    if (powerMatch) {
+                        const [, base, exp] = powerMatch;
+                        const result = Math.pow(parseFloat(base), parseFloat(exp));
+                        return { type: 'calculation', result: `= ${result}` };
+                    }
+
+                    // 处理e的指数
+                    const expMatch = input.match(/^e\s*的\s*(\d+(?:\.\d+)?)\s*次方$/);
+                    if (expMatch) {
+                        const exp = parseFloat(expMatch[1]);
+                        const result = Math.exp(exp);
+                        return { type: 'calculation', result: `= ${result.toFixed(6)}` };
+                    }
+
+                    // 处理进制转换
+                    const baseMatch = input.match(/^(\d+)\s*进制转\s*(\d+)\s*进制\s*(\d+)$/);
+                    if (baseMatch) {
+                        const [, fromBase, toBase, number] = baseMatch;
+                        const from = parseInt(fromBase);
+                        const to = parseInt(toBase);
+                        if (from < 2 || from > 36 || to < 2 || to > 36) {
+                            return { type: 'calculation', result: '进制范围必须在2-36之间' };
+                        }
+                        try {
+                            const decimal = parseInt(number, from);
+                            const result = decimal.toString(to).toUpperCase();
+                            return { type: 'calculation', result: `= ${result}` };
+                        } catch (e) {
+                            return { type: 'calculation', result: '进制转换错误' };
+                        }
+                    }
+
                     const basicMatch = expression.match(/^(\d+(?:\.\d+)?)\s*([+\-*/])\s*(\d+(?:\.\d+)?)$/);
                     if (basicMatch) {
                         const [, num1, operator, num2] = basicMatch;
@@ -1075,6 +1294,50 @@
                     const month = targetDate.getMonth() + 1;
                     const day = targetDate.getDate();
                     return { type: 'date', result: `${month}月${day}日` };
+                }
+
+                // 处理农历查询
+                const lunarMatch = input.match(/^.*?(今天|明天|昨天)\s*(农历|阴历)[？?]?$/);
+                if (lunarMatch) {
+                    const [, dayType] = lunarMatch;
+                    let targetDate = new Date();
+                    
+                    switch (dayType) {
+                        case '明天': targetDate.setDate(targetDate.getDate() + 1); break;
+                        case '昨天': targetDate.setDate(targetDate.getDate() - 1); break;
+                    }
+                    
+                    const lunarDate = this.getLunarDate(targetDate);
+                    return { type: 'date', result: `农历${lunarDate}` };
+                }
+
+                // 处理节假日查询
+                const holidayMatch = input.match(/^.*?(今天|明天|昨天)\s*(什么节|节日|假期)[？?]?$/);
+                if (holidayMatch) {
+                    const [, dayType] = holidayMatch;
+                    let targetDate = new Date();
+                    
+                    switch (dayType) {
+                        case '明天': targetDate.setDate(targetDate.getDate() + 1); break;
+                        case '昨天': targetDate.setDate(targetDate.getDate() - 1); break;
+                    }
+                    
+                    const holiday = this.getHoliday(targetDate);
+                    if (holiday) {
+                        return { type: 'date', result: holiday };
+                    } else {
+                        return { type: 'date', result: '非法定节假日' };
+                    }
+                }
+
+                // 处理下个节假日查询
+                const nextHolidayMatch = input.match(/^.*?(下个|下一个|下次)\s*(节日|假期|节)[？?]?$/);
+                if (nextHolidayMatch) {
+                    const nextHoliday = this.getNextHoliday(now);
+                    if (nextHoliday) {
+                        const { name, date, daysLeft } = nextHoliday;
+                        return { type: 'date', result: `${name}（${date}，还有${daysLeft}天）` };
+                    }
                 }
 
                 // 处理距离日期计算
@@ -1251,10 +1514,91 @@
                     }
                 }
 
+                // 能量转换
+                const energyMatch = input.match(/^(\d+(?:\.\d+)?)\s*(千焦|焦耳|卡路里|千卡|瓦时|千瓦时|kJ|J|cal|kcal|Wh|kWh)/);
+                if (energyMatch) {
+                    const [, value, unit] = energyMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.energy[unit];
+                    
+                    if (factor) {
+                        const joules = num * factor;
+                        if (unit === '焦耳' || unit === 'J') {
+                            const kj = (joules / 1000).toFixed(3);
+                            const cal = (joules / 4.184).toFixed(2);
+                            return { type: 'conversion', result: `${kj}千焦 / ${cal}卡路里` };
+                        } else if (unit === '千焦' || unit === 'kJ') {
+                            const kcal = (joules / 4184).toFixed(3);
+                            return { type: 'conversion', result: `${kcal}千卡` };
+                        } else if (unit === '卡路里' || unit === 'cal') {
+                            const kj = (joules / 1000).toFixed(3);
+                            return { type: 'conversion', result: `${kj}千焦` };
+                        } else if (unit === '千卡' || unit === 'kcal') {
+                            const kj = (joules / 1000).toFixed(1);
+                            return { type: 'conversion', result: `${kj}千焦` };
+                        } else if (unit === '千瓦时' || unit === 'kWh') {
+                            const mj = (joules / 1000000).toFixed(1);
+                            return { type: 'conversion', result: `${mj}兆焦` };
+                        }
+                    }
+                }
+
+                // 功率转换
+                const powerMatch = input.match(/^(\d+(?:\.\d+)?)\s*(瓦|千瓦|马力|兆瓦|W|kW|MW|hp)/);
+                if (powerMatch) {
+                    const [, value, unit] = powerMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.power[unit];
+                    
+                    if (factor) {
+                        const watts = num * factor;
+                        if (unit === '瓦' || unit === 'W') {
+                            const kw = (watts / 1000).toFixed(3);
+                            const hp = (watts / 745.7).toFixed(3);
+                            return { type: 'conversion', result: `${kw}千瓦 / ${hp}马力` };
+                        } else if (unit === '千瓦' || unit === 'kW') {
+                            const hp = (watts / 745.7).toFixed(2);
+                            return { type: 'conversion', result: `${hp}马力` };
+                        } else if (unit === '马力' || unit === 'hp') {
+                            const kw = (watts / 1000).toFixed(2);
+                            return { type: 'conversion', result: `${kw}千瓦` };
+                        } else if (unit === '兆瓦' || unit === 'MW') {
+                            const hp = (watts / 745.7).toFixed(0);
+                            return { type: 'conversion', result: `${hp}马力` };
+                        }
+                    }
+                }
+
+                // 压力转换
+                const pressureMatch = input.match(/^(\d+(?:\.\d+)?)\s*(帕|千帕|兆帕|毫米汞柱|大气压|Pa|kPa|MPa|mmHg|atm|bar)/);
+                if (pressureMatch) {
+                    const [, value, unit] = pressureMatch;
+                    const num = parseFloat(value);
+                    const factor = this.conversionFactors.pressure[unit];
+                    
+                    if (factor) {
+                        const pascals = num * factor;
+                        if (unit === '帕' || unit === 'Pa') {
+                            const kpa = (pascals / 1000).toFixed(3);
+                            const mmhg = (pascals / 133.322).toFixed(2);
+                            return { type: 'conversion', result: `${kpa}千帕 / ${mmhg}毫米汞柱` };
+                        } else if (unit === '千帕' || unit === 'kPa') {
+                            const atm = (pascals / 101325).toFixed(4);
+                            return { type: 'conversion', result: `${atm}大气压` };
+                        } else if (unit === '大气压' || unit === 'atm') {
+                            const kpa = (pascals / 1000).toFixed(1);
+                            return { type: 'conversion', result: `${kpa}千帕` };
+                        } else if (unit === '毫米汞柱' || unit === 'mmHg') {
+                            const kpa = (pascals / 1000).toFixed(2);
+                            return { type: 'conversion', result: `${kpa}千帕` };
+                        }
+                    }
+                }
+
                 return null;
             }
 
-            handleCurrencyConversion(match, input) {
+            async handleCurrencyConversion(match, input) {
                 const currencyMatch = input.match(/^(\d+(?:\.\d+)?)\s*(美元|人民币|欧元|英镑|日元|港币|USD|CNY|EUR|GBP|JPY|HKD)$/);
                 if (currencyMatch) {
                     const [, amount, currency] = currencyMatch;
@@ -1271,6 +1615,35 @@
 
                     const fromCurrency = currencyMap[currency] || currency;
                     
+                    // 尝试获取实时汇率
+                    try {
+                        const realTimeRates = await this.getRealTimeExchangeRates(fromCurrency);
+                        if (realTimeRates) {
+                            if (fromCurrency === 'USD') {
+                                const cnyAmount = (num * realTimeRates.CNY).toFixed(4);
+                                return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                            } else if (fromCurrency === 'CNY') {
+                                const usdAmount = (num / realTimeRates.USD).toFixed(4);
+                                return { type: 'currency', result: `（${usdAmount} 美元）` };
+                            } else if (fromCurrency === 'EUR') {
+                                const cnyAmount = (num * realTimeRates.CNY).toFixed(4);
+                                return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                            } else if (fromCurrency === 'GBP') {
+                                const cnyAmount = (num * realTimeRates.CNY).toFixed(4);
+                                return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                            } else if (fromCurrency === 'JPY') {
+                                const cnyAmount = (num * realTimeRates.CNY).toFixed(4);
+                                return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                            } else if (fromCurrency === 'HKD') {
+                                const cnyAmount = (num * realTimeRates.CNY).toFixed(4);
+                                return { type: 'currency', result: `（${cnyAmount} 人民币）` };
+                            }
+                        }
+                    } catch (error) {
+                        console.log('实时汇率获取失败，使用本地汇率:', error);
+                    }
+                    
+                    // 如果实时汇率获取失败，使用本地汇率
                     if (fromCurrency === 'USD') {
                         const cnyAmount = (num * this.exchangeRates.USD.CNY).toFixed(4);
                         return { type: 'currency', result: `（${cnyAmount} 人民币）` };
@@ -1292,6 +1665,24 @@
                     }
                 }
 
+                return null;
+            }
+
+            async getRealTimeExchangeRates(baseCurrency) {
+                // 使用免费的汇率API（ExchangeRate-API）
+                const apiKey = 'YOUR_API_KEY'; // 可以申请免费的API密钥
+                const url = `https://api.exchangerate-api.com/v4/latest/${baseCurrency}`;
+                
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.rates;
+                    }
+                } catch (error) {
+                    console.error('获取实时汇率失败:', error);
+                }
+                
                 return null;
             }
 
@@ -1436,6 +1827,202 @@
                 return null;
             }
 
+            handleConstellationQuery(match, input) {
+                const today = new Date();
+                
+                // 处理"今天/明天/昨天什么星座"
+                const todayMatch = input.match(/^.*?(今天|明天|昨天)\s*(什么星座|星座)[？?]?$/);
+                if (todayMatch) {
+                    const [, dayType] = todayMatch;
+                    let targetDate = new Date();
+                    
+                    switch (dayType) {
+                        case '明天': targetDate.setDate(targetDate.getDate() + 1); break;
+                        case '昨天': targetDate.setDate(targetDate.getDate() - 1); break;
+                    }
+                    
+                    const constellation = this.getConstellation(targetDate.getMonth() + 1, targetDate.getDate());
+                    return { type: 'constellation', result: constellation.name };
+                }
+
+                // 处理日期查星座
+                const dateMatch = input.match(/^.*?(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(是什么星座|星座)[？?]?$/);
+                if (dateMatch) {
+                    const [, month, day] = dateMatch;
+                    const constellation = this.getConstellation(parseInt(month), parseInt(day));
+                    return { type: 'constellation', result: `${constellation.name}（${constellation.element}星座，守护星：${constellation.planet}）` };
+                }
+
+                // 处理带年份的日期查星座
+                const yearDateMatch = input.match(/^.*?(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(是什么星座|星座)[？?]?$/);
+                if (yearDateMatch) {
+                    const [, year, month, day] = yearDateMatch;
+                    const constellation = this.getConstellation(parseInt(month), parseInt(day));
+                    return { type: 'constellation', result: constellation.name };
+                }
+
+                // 处理"我是X月X日生"格式
+                const birthMatch = input.match(/^.*?我是\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日\s*(生|出生)[，,]?\s*(什么星座|星座)[？?]?$/);
+                if (birthMatch) {
+                    const [, month, day] = birthMatch;
+                    const constellation = this.getConstellation(parseInt(month), parseInt(day));
+                    return { type: 'constellation', result: constellation.name };
+                }
+
+                // 处理简化格式：X.X或X/X
+                const simpleMatch = input.match(/^.*?(\d{1,2})\s*[月./]\s*(\d{1,2})\s*[日号]?\s*(什么星座|星座)[？?]?$/);
+                if (simpleMatch) {
+                    const [, month, day] = simpleMatch;
+                    const constellation = this.getConstellation(parseInt(month), parseInt(day));
+                    return { type: 'constellation', result: constellation.name };
+                }
+
+                // 处理星座查日期
+                const constellationMatch = input.match(/^.*?(白羊座|金牛座|双子座|巨蟹座|狮子座|处女座|天秤座|天蝎座|射手座|摩羯座|水瓶座|双鱼座)\s*(日期|时间|什么时候)[？?]?$/);
+                if (constellationMatch) {
+                    const [, constellationName] = constellationMatch;
+                    const constellation = this.constellations.find(c => c.name === constellationName);
+                    if (constellation) {
+                        const [startMonth, startDay] = constellation.start;
+                        const [endMonth, endDay] = constellation.end;
+                        
+                        if (startMonth === endMonth) {
+                            return { type: 'constellation', result: `${startMonth}月${startDay}日 - ${endMonth}月${endDay}日` };
+                        } else if (endMonth < startMonth) {
+                            // 跨年的情况（如摩羯座）
+                            return { type: 'constellation', result: `${startMonth}月${startDay}日 - 次年${endMonth}月${endDay}日` };
+                        } else {
+                            return { type: 'constellation', result: `${startMonth}月${startDay}日 - ${endMonth}月${endDay}日` };
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            getConstellation(month, day) {
+                for (const constellation of this.constellations) {
+                    const [startMonth, startDay] = constellation.start;
+                    const [endMonth, endDay] = constellation.end;
+                    
+                    if (startMonth === endMonth) {
+                        // 同一个月内
+                        if (month === startMonth && day >= startDay && day <= endDay) {
+                            return constellation;
+                        }
+                    } else if (endMonth > startMonth) {
+                        // 跨月但不跨年
+                        if ((month === startMonth && day >= startDay) || 
+                            (month === endMonth && day <= endDay) ||
+                            (month > startMonth && month < endMonth)) {
+                            return constellation;
+                        }
+                    } else {
+                        // 跨年的情况（如摩羯座：12月22日 - 1月19日）
+                        if ((month === startMonth && day >= startDay) || 
+                            (month === endMonth && day <= endDay)) {
+                            return constellation;
+                        }
+                    }
+                }
+                return this.constellations[0]; // 默认返回第一个星座
+            }
+
+            getLunarDate(date) {
+                // 简化的农历转换（使用近似算法）
+                const lunarMonths = ['正月', '二月', '三月', '四月', '五月', '六月', 
+                                   '七月', '八月', '九月', '十月', '冬月', '腊月'];
+                const lunarDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
+                                 '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+                                 '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
+                
+                // 使用简化算法估算农历（实际应该使用专业的农历转换库）
+                const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+                const lunarMonth = Math.floor((dayOfYear - 20) / 29.5) % 12;
+                const lunarDay = Math.floor((dayOfYear - 20) % 29.5);
+                
+                const monthName = lunarMonths[lunarMonth >= 0 ? lunarMonth : lunarMonth + 12];
+                const dayName = lunarDays[lunarDay >= 0 && lunarDay < 30 ? lunarDay : 0];
+                
+                return `${monthName}${dayName}`;
+            }
+
+            getHoliday(date) {
+                const year = date.getFullYear();
+                const dateStr = date.toISOString().split('T')[0];
+                
+                // 检查是否为法定节假日
+                if (this.holidays[year]) {
+                    for (const [holiday, holidayDate] of Object.entries(this.holidays[year])) {
+                        if (holidayDate === dateStr) {
+                            return holiday;
+                        }
+                    }
+                }
+                
+                // 检查固定节日
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                
+                const fixedHolidays = {
+                    '1-1': '元旦',
+                    '3-8': '妇女节',
+                    '3-12': '植树节',
+                    '4-1': '愚人节',
+                    '5-4': '青年节',
+                    '6-1': '儿童节',
+                    '7-1': '建党节',
+                    '8-1': '建军节',
+                    '9-10': '教师节',
+                    '10-1': '国庆节',
+                    '12-25': '圣诞节'
+                };
+                
+                const key = `${month}-${day}`;
+                return fixedHolidays[key] || null;
+            }
+
+            getNextHoliday(currentDate) {
+                const year = currentDate.getFullYear();
+                const currentDateStr = currentDate.toISOString().split('T')[0];
+                
+                // 合并所有节假日
+                const allHolidays = [];
+                
+                // 添加法定节假日
+                if (this.holidays[year]) {
+                    for (const [name, date] of Object.entries(this.holidays[year])) {
+                        if (date > currentDateStr) {
+                            allHolidays.push({ name, date });
+                        }
+                    }
+                }
+                
+                // 添加下一年的节假日（如果当年的都过了）
+                if (this.holidays[year + 1]) {
+                    for (const [name, date] of Object.entries(this.holidays[year + 1])) {
+                        allHolidays.push({ name, date });
+                    }
+                }
+                
+                // 按日期排序
+                allHolidays.sort((a, b) => a.date.localeCompare(b.date));
+                
+                if (allHolidays.length > 0) {
+                    const nextHoliday = allHolidays[0];
+                    const holidayDate = new Date(nextHoliday.date);
+                    const daysLeft = Math.ceil((holidayDate - currentDate) / (1000 * 60 * 60 * 24));
+                    
+                    return {
+                        name: nextHoliday.name,
+                        date: `${holidayDate.getMonth() + 1}月${holidayDate.getDate()}日`,
+                        daysLeft
+                    };
+                }
+                
+                return null;
+            }
+
             formatOutput(result) {
                 if (!result) return '';
                 return result.result || '';
@@ -1570,7 +2157,8 @@
                         'currency': '💰 汇率换算',
                         'formula': '📐 公式定律',
                         'calorie': '🍎 热量查询',
-                        'zodiac': '🐲 生肖查询'
+                        'zodiac': '🐲 生肖查询',
+                        'constellation': '⭐ 星座查询'
                     };
                     
                     const categoryName = categoryNames[result.category] || '🤖 智能识别';
@@ -1620,7 +2208,8 @@
                         'currency': '💰 汇率换算',
                         'formula': '📐 公式定律',
                         'calorie': '🍎 热量查询',
-                        'zodiac': '🐲 生肖查询'
+                        'zodiac': '🐲 生肖查询',
+                        'constellation': '⭐ 星座查询'
                     };
                     
                     const categoryName = categoryNames[result.category] || '🤖 智能识别';

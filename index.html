@@ -550,8 +550,8 @@
                         <div class="examples">
                             <!-- 年份查生肖 -->
                             <div class="example-btn" onclick="setInput('1990年属')">1990年属</div>
-                            <div class="example-btn" onclick="setInput('1998年属什么')">1998年属什么</div>
-                            <div class="example-btn" onclick="setInput('2000年属')">2000年属</div>
+                            <div class="example-btn" onclick="setInput('1998 年属')">1998 年属</div>
+                            <div class="example-btn" onclick="setInput('2000年属什么')">2000年属什么</div>
                             <div class="example-btn" onclick="setInput('1985属什么')">1985属什么</div>
                             <div class="example-btn" onclick="setInput('2024年属什么')">2024年属什么</div>
                             <!-- 生肖查年份 -->
@@ -708,9 +708,10 @@
                         category: 'zodiac',
                         priority: 8,
                         patterns: [
-                            /^.*?(\d{4})\s*年\s*属\s*什么?$/,
-                            /^.*?(\d{4})\s*年\s*属$/,
-                            /^.*?(\d{4})\s*属\s*什么?$/,
+                            /^.*?(\d{4})\s*年\s*属\s*什么?.*?$/,
+                            /^.*?(\d{4})\s*年\s*属.*?$/,
+                            /^.*?(\d{4})\s*属\s*什么?.*?$/,
+                            /^.*?(\d{4})\s*属.*?$/,
                             /^.*?属\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪)\s*的\s*年份.*?$/,
                             /^.*?生肖\s*(鼠|牛|虎|兔|龙|蛇|马|羊|猴|鸡|狗|猪).*?$/
                         ],
@@ -1383,8 +1384,8 @@
             }
 
             handleZodiacQuery(match, input) {
-                // 处理年份查询生肖
-                const yearMatch = input.match(/^(\d{4})\s*年?\s*属\s*什么?$/);
+                // 处理年份查询生肖 - 支持各种格式
+                const yearMatch = input.match(/.*?(\d{4})\s*年?\s*属.*/);
                 if (yearMatch) {
                     const [, year] = yearMatch;
                     const yearNum = parseInt(year);
@@ -1394,7 +1395,8 @@
                     return { type: 'zodiac', result: zodiac };
                 }
 
-                const yearMatch2 = input.match(/^(\d{4})\s*属\s*什么?$/);
+                // 处理没有"年"字的格式，如"1990属什么"
+                const yearMatch2 = input.match(/.*?(\d{4})\s*属.*/);
                 if (yearMatch2) {
                     const [, year] = yearMatch2;
                     const yearNum = parseInt(year);

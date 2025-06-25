@@ -48,8 +48,89 @@
             padding: 30px;
         }
         
+        .tabs-container {
+            margin-bottom: 25px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px 12px 0 0;
+            padding: 8px;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            background: transparent;
+            border: none;
+        }
+        
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .tab-btn.active {
+            background: #4f46e5;
+            color: white;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
+        }
+        
+        .tab-content {
+            background: #f8fafc;
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .tab-panel {
+            display: none;
+            padding: 20px;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
+        }
+        
+        .example-btn {
+            padding: 10px 15px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .example-btn:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+            transform: translateY(-1px);
+        }
+        
         .input-section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .input-group {
@@ -104,87 +185,14 @@
             padding: 10px 12px;
         }
         
-        .tabs-container {
-            margin-bottom: 20px;
-        }
-        
-        .tab-nav {
-            display: flex;
-            background: #f1f5f9;
-            border-radius: 12px 12px 0 0;
-            padding: 8px;
-            gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        .tab-nav::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .tab-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-size: 13px;
-            font-weight: 500;
-            color: #64748b;
-            background: transparent;
-        }
-        
-        .tab-btn:hover {
-            background: #e2e8f0;
-            color: #475569;
-        }
-        
-        .tab-btn.active {
-            background: #4f46e5;
-            color: white;
-            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
-        }
-        
-        .tab-content {
-            background: #f8fafc;
-            border-radius: 0 0 12px 12px;
-            border-top: 1px solid #e2e8f0;
-        }
-        
-        .tab-panel {
-            display: none;
-            padding: 20px;
-        }
-        
-        .tab-panel.active {
-            display: block;
-        }
-        
-        .examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 8px;
-        }
-        
-        .example-btn {
-            padding: 10px 15px;
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-size: 14px;
-        }
-        
-        .example-btn:hover {
-            background: #e5e7eb;
-            border-color: #9ca3af;
-        }
-        
         .result-section {
-            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .result-section h3 {
+            margin-bottom: 15px;
+            color: #374151;
+            font-size: 18px;
         }
         
         .result-box {
@@ -198,13 +206,14 @@
         }
         
         .result-content {
-            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .result-empty {
             color: #64748b;
             font-style: italic;
-            text-align: center;
         }
         
         .result-success {
@@ -215,36 +224,25 @@
         .result-error {
             color: #dc2626;
         }
-
-        .result-pending {
-            color: #64748b;
-            font-style: italic;
-            opacity: 0.8;
-        }
         
-        .result-category {
-            font-size: 12px;
-            color: #6366f1;
-            font-weight: 600;
-            margin-bottom: 8px;
+        .category-tag {
+            display: inline-block;
             padding: 4px 8px;
             background: #e0e7ff;
+            color: #3730a3;
             border-radius: 6px;
-            display: inline-block;
+            font-size: 12px;
+            margin-right: 8px;
         }
         
         .loading {
             display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
         
         .spinner {
             width: 20px;
             height: 20px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #f3f4f6;
             border-top: 2px solid #4f46e5;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -256,57 +254,93 @@
         }
         
         .history {
-            margin-top: 30px;
+            margin-top: 40px;
+        }
+        
+        .history h3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #374151;
+            font-size: 18px;
+        }
+        
+        .clear-btn {
+            font-size: 14px;
+            padding: 8px 16px;
         }
         
         .history-item {
-            background: #f1f5f9;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 10px;
-            border-left: 4px solid #4f46e5;
         }
         
         .history-input {
             font-weight: 500;
-            color: #334155;
+            color: #374151;
             margin-bottom: 5px;
         }
         
-        .history-output {
-            color: #059669;
-            font-family: 'Monaco', 'Consolas', monospace;
+        .history-result {
+            color: #6b7280;
+            font-size: 14px;
         }
         
-        .clear-btn {
-            float: right;
+        .debug-panel {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 400px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
             font-size: 12px;
-            padding: 5px 10px;
+            z-index: 1000;
+        }
+        
+        .debug-log {
+            margin-bottom: 5px;
+            padding: 2px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .debug-timestamp {
+            color: #888;
+            margin-right: 8px;
         }
         
         @media (max-width: 768px) {
-            .input-group {
-                flex-direction: column;
-            }
-            
-            .examples {
-                grid-template-columns: 1fr;
-            }
-            
             .container {
                 margin: 10px;
                 border-radius: 15px;
             }
             
-            .tab-nav {
-                flex-wrap: wrap;
+            .main {
+                padding: 20px;
             }
             
-            .tab-btn {
-                flex: 1;
-                min-width: 100px;
-                font-size: 11px;
-                padding: 6px 12px;
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .examples {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+            
+            .debug-panel {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
             }
         }
     </style>
@@ -315,101 +349,235 @@
     <div class="container">
         <div class="header">
             <h1>🧠 中文智能续写工具</h1>
-            <p>输入任何内容，体验智能补全的魔力</p>
+            <p>支持数学计算、日期时间、单位转换、汇率换算等8大类智能续写功能</p>
         </div>
         
         <div class="main">
-            <div class="input-section">
-                <div class="input-group">
-                    <input type="text" id="userInput" placeholder="请输入要测试的内容，如：1+1、3天后、纽约时间..." maxlength="100">
-                    <button class="btn" onclick="processInput()">🚀 智能续写</button>
-                    <button class="btn btn-secondary" onclick="clearAll()">🗑️ 清空</button>
-                    <button class="btn btn-debug" onclick="toggleDebug()">🐛 调试</button>
+            <!-- 示例Tab - 移到输入框上方 -->
+            <div class="tabs-container">
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="switchTab('math')">🔢 数学计算</button>
+                    <button class="tab-btn" onclick="switchTab('date')">📅 日期时间</button>
+                    <button class="tab-btn" onclick="switchTab('timezone')">🌍 时区查询</button>
+                    <button class="tab-btn" onclick="switchTab('unit')">🔄 单位转换</button>
+                    <button class="tab-btn" onclick="switchTab('currency')">💰 汇率换算</button>
+                    <button class="tab-btn" onclick="switchTab('formula')">📐 公式定律</button>
+                    <button class="tab-btn" onclick="switchTab('calorie')">🍎 热量查询</button>
+                    <button class="tab-btn" onclick="switchTab('zodiac')">🐲 生肖查询</button>
                 </div>
                 
-                <div class="tabs-container">
-                    <div class="tab-nav">
-                        <div class="tab-btn active" onclick="switchTab('math')">🔢 数学计算</div>
-                        <div class="tab-btn" onclick="switchTab('date')">📅 日期时间</div>
-                        <div class="tab-btn" onclick="switchTab('timezone')">🌍 时区查询</div>
-                        <div class="tab-btn" onclick="switchTab('unit')">🔄 单位转换</div>
-                        <div class="tab-btn" onclick="switchTab('currency')">💰 汇率换算</div>
-                        <div class="tab-btn" onclick="switchTab('formula')">📐 公式定律</div>
-                        <div class="tab-btn" onclick="switchTab('calorie')">🍎 热量查询</div>
-                        <div class="tab-btn" onclick="switchTab('zodiac')">🐲 生肖查询</div>
+                <div class="tab-content">
+                    <div id="tab-math" class="tab-panel active">
+                        <div class="examples">
+                            <!-- 基础运算 -->
+                            <div class="example-btn" onclick="setInput('1+1')">1+1</div>
+                            <div class="example-btn" onclick="setInput('10-3')">10-3</div>
+                            <div class="example-btn" onclick="setInput('5*6')">5*6</div>
+                            <div class="example-btn" onclick="setInput('20/4')">20/4</div>
+                            <!-- 中文运算 -->
+                            <div class="example-btn" onclick="setInput('8加7')">8加7</div>
+                            <div class="example-btn" onclick="setInput('15减6')">15减6</div>
+                            <div class="example-btn" onclick="setInput('4乘9')">4乘9</div>
+                            <div class="example-btn" onclick="setInput('18除3')">18除3</div>
+                            <!-- 平方根等 -->
+                            <div class="example-btn" onclick="setInput('9的平方根')">9的平方根</div>
+                            <div class="example-btn" onclick="setInput('27的立方根')">27的立方根</div>
+                            <div class="example-btn" onclick="setInput('5的平方')">5的平方</div>
+                            <div class="example-btn" onclick="setInput('3的立方')">3的立方</div>
+                            <!-- 打折计算 -->
+                            <div class="example-btn" onclick="setInput('299打7折')">299打7折</div>
+                            <div class="example-btn" onclick="setInput('原价500打8折')">原价500打8折</div>
+                            <!-- 百分比计算 -->
+                            <div class="example-btn" onclick="setInput('100的20%')">100的20%</div>
+                            <div class="example-btn" onclick="setInput('25%的80')">25%的80</div>
+                            <!-- 分期计算 -->
+                            <div class="example-btn" onclick="setInput('12000分期12期')">12000分期12期</div>
+                        </div>
                     </div>
                     
-                    <div class="tab-content">
-                        <div id="tab-math" class="tab-panel active">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('1+1')">1+1</div>
-                                <div class="example-btn" onclick="setInput('299打7折')">299打7折</div>
-                                <div class="example-btn" onclick="setInput('100的20%')">100的20%</div>
-                                <div class="example-btn" onclick="setInput('9的平方')">9的平方</div>
-                            </div>
+                    <div id="tab-date" class="tab-panel">
+                        <div class="examples">
+                            <!-- 相对日期 -->
+                            <div class="example-btn" onclick="setInput('3天后')">3天后</div>
+                            <div class="example-btn" onclick="setInput('2周前')">2周前</div>
+                            <div class="example-btn" onclick="setInput('1个月后')">1个月后</div>
+                            <div class="example-btn" onclick="setInput('2年前')">2年前</div>
+                            <div class="example-btn" onclick="setInput('5天内')">5天内</div>
+                            <!-- 快速日期 -->
+                            <div class="example-btn" onclick="setInput('明天')">明天</div>
+                            <div class="example-btn" onclick="setInput('后天')">后天</div>
+                            <div class="example-btn" onclick="setInput('昨天')">昨天</div>
+                            <div class="example-btn" onclick="setInput('前天')">前天</div>
+                            <div class="example-btn" onclick="setInput('大后天')">大后天</div>
+                            <!-- 周期日期 -->
+                            <div class="example-btn" onclick="setInput('下周一')">下周一</div>
+                            <div class="example-btn" onclick="setInput('上周五')">上周五</div>
+                            <div class="example-btn" onclick="setInput('下个月')">下个月</div>
+                            <div class="example-btn" onclick="setInput('明年')">明年</div>
+                            <!-- 具体日期 -->
+                            <div class="example-btn" onclick="setInput('10月1日')">10月1日</div>
+                            <div class="example-btn" onclick="setInput('2024年12月25日')">2024年12月25日</div>
+                            <!-- 距离计算 -->
+                            <div class="example-btn" onclick="setInput('距离10月1日还剩')">距离10月1日还剩</div>
+                            <!-- 本周日期 -->
+                            <div class="example-btn" onclick="setInput('本周五')">本周五</div>
                         </div>
-                        
-                        <div id="tab-date" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('3天后')">3天后</div>
-                                <div class="example-btn" onclick="setInput('明天')">明天</div>
-                                <div class="example-btn" onclick="setInput('本周五')">本周五</div>
-                                <div class="example-btn" onclick="setInput('距离10月1日还剩')">距离10月1日还剩</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-timezone" class="tab-panel">
+                        <div class="examples">
+                            <!-- 城市时间 -->
+                            <div class="example-btn" onclick="setInput('纽约时间')">纽约时间</div>
+                            <div class="example-btn" onclick="setInput('伦敦时间')">伦敦时间</div>
+                            <div class="example-btn" onclick="setInput('东京时间')">东京时间</div>
+                            <div class="example-btn" onclick="setInput('巴黎时间')">巴黎时间</div>
+                            <div class="example-btn" onclick="setInput('悉尼时间')">悉尼时间</div>
+                            <!-- 特定时间格式 -->
+                            <div class="example-btn" onclick="setInput('9点纽约时间')">9点纽约时间</div>
+                            <div class="example-btn" onclick="setInput('15:30伦敦时间')">15:30伦敦时间</div>
+                            <!-- 现在时间 -->
+                            <div class="example-btn" onclick="setInput('现在东京时间')">现在东京时间</div>
+                            <div class="example-btn" onclick="setInput('现在洛杉矶几点')">现在洛杉矶几点</div>
+                            <!-- 疑问格式 -->
+                            <div class="example-btn" onclick="setInput('伦敦现在几点')">伦敦现在几点</div>
+                            <div class="example-btn" onclick="setInput('迪拜现在时间')">迪拜现在时间</div>
                         </div>
-                        
-                        <div id="tab-timezone" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('纽约时间')">纽约时间</div>
-                                <div class="example-btn" onclick="setInput('现在东京时间')">现在东京时间</div>
-                                <div class="example-btn" onclick="setInput('伦敦现在几点')">伦敦现在几点</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-unit" class="tab-panel">
+                        <div class="examples">
+                            <!-- 温度转换 -->
+                            <div class="example-btn" onclick="setInput('37摄氏度等于')">37摄氏度等于</div>
+                            <div class="example-btn" onclick="setInput('100华氏度')">100华氏度</div>
+                            <div class="example-btn" onclick="setInput('0℃')">0℃</div>
+                            <div class="example-btn" onclick="setInput('212℉转换为')">212℉转换为</div>
+                            <!-- 长度转换 -->
+                            <div class="example-btn" onclick="setInput('100米')">100米</div>
+                            <div class="example-btn" onclick="setInput('50厘米等于')">50厘米等于</div>
+                            <div class="example-btn" onclick="setInput('1000毫米')">1000毫米</div>
+                            <div class="example-btn" onclick="setInput('5千米')">5千米</div>
+                            <div class="example-btn" onclick="setInput('10英尺')">10英尺</div>
+                            <div class="example-btn" onclick="setInput('12英寸转成')">12英寸转成</div>
+                            <!-- 重量转换 -->
+                            <div class="example-btn" onclick="setInput('1公斤')">1公斤</div>
+                            <div class="example-btn" onclick="setInput('500克等于')">500克等于</div>
+                            <div class="example-btn" onclick="setInput('2磅')">2磅</div>
+                            <div class="example-btn" onclick="setInput('1吨转换为')">1吨转换为</div>
+                            <!-- 面积转换 -->
+                            <div class="example-btn" onclick="setInput('1亩等于')">1亩等于</div>
+                            <div class="example-btn" onclick="setInput('100平方米')">100平方米</div>
+                            <div class="example-btn" onclick="setInput('1英亩')">1英亩</div>
+                            <!-- 体积转换 -->
+                            <div class="example-btn" onclick="setInput('1升')">1升</div>
+                            <div class="example-btn" onclick="setInput('500毫升')">500毫升</div>
+                            <div class="example-btn" onclick="setInput('1加仑等于')">1加仑等于</div>
                         </div>
-                        
-                        <div id="tab-unit" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('37摄氏度等于')">37摄氏度等于</div>
-                                <div class="example-btn" onclick="setInput('100米')">100米</div>
-                                <div class="example-btn" onclick="setInput('1公斤')">1公斤</div>
-                                <div class="example-btn" onclick="setInput('1亩等于')">1亩等于</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-currency" class="tab-panel">
+                        <div class="examples">
+                            <!-- 美元换算 -->
+                            <div class="example-btn" onclick="setInput('1美元')">1美元</div>
+                            <div class="example-btn" onclick="setInput('100美元等于')">100美元等于</div>
+                            <div class="example-btn" onclick="setInput('50USD')">50USD</div>
+                            <!-- 人民币换算 -->
+                            <div class="example-btn" onclick="setInput('100人民币')">100人民币</div>
+                            <div class="example-btn" onclick="setInput('500人民币换算成')">500人民币换算成</div>
+                            <div class="example-btn" onclick="setInput('1000CNY')">1000CNY</div>
+                            <!-- 其他货币 -->
+                            <div class="example-btn" onclick="setInput('1欧元')">1欧元</div>
+                            <div class="example-btn" onclick="setInput('10英镑')">10英镑</div>
+                            <div class="example-btn" onclick="setInput('1000日元')">1000日元</div>
+                            <div class="example-btn" onclick="setInput('100港币兑换')">100港币兑换</div>
+                            <div class="example-btn" onclick="setInput('50EUR')">50EUR</div>
+                            <div class="example-btn" onclick="setInput('20GBP')">20GBP</div>
                         </div>
-                        
-                        <div id="tab-currency" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('1美元')">1美元</div>
-                                <div class="example-btn" onclick="setInput('100人民币')">100人民币</div>
-                                <div class="example-btn" onclick="setInput('1欧元')">1欧元</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-formula" class="tab-panel">
+                        <div class="examples">
+                            <!-- 物理定律 -->
+                            <div class="example-btn" onclick="setInput('牛顿第二定律')">牛顿第二定律</div>
+                            <div class="example-btn" onclick="setInput('牛顿第一定律是什么')">牛顿第一定律是什么</div>
+                            <div class="example-btn" onclick="setInput('牛顿第三定律')">牛顿第三定律</div>
+                            <div class="example-btn" onclick="setInput('欧姆定律')">欧姆定律</div>
+                            <div class="example-btn" onclick="setInput('万有引力定律')">万有引力定律</div>
+                            <div class="example-btn" onclick="setInput('能量守恒定律是什么')">能量守恒定律是什么</div>
+                            <!-- 数学公式 -->
+                            <div class="example-btn" onclick="setInput('勾股定理')">勾股定理</div>
+                            <div class="example-btn" onclick="setInput('二次方程是什么')">二次方程是什么</div>
+                            <div class="example-btn" onclick="setInput('圆的面积公式')">圆的面积公式</div>
+                            <div class="example-btn" onclick="setInput('球的体积公式')">球的体积公式</div>
+                            <!-- 化学分子式 -->
+                            <div class="example-btn" onclick="setInput('水的分子式')">水的分子式</div>
+                            <div class="example-btn" onclick="setInput('二氧化碳分子式是什么')">二氧化碳分子式是什么</div>
+                            <div class="example-btn" onclick="setInput('氧气的化学式')">氧气的化学式</div>
+                            <div class="example-btn" onclick="setInput('甲烷')">甲烷</div>
+                            <div class="example-btn" onclick="setInput('乙醇的分子式')">乙醇的分子式</div>
+                            <!-- 物理常数 -->
+                            <div class="example-btn" onclick="setInput('光速是多少')">光速是多少</div>
+                            <div class="example-btn" onclick="setInput('声速')">声速</div>
+                            <div class="example-btn" onclick="setInput('重力加速度是什么')">重力加速度是什么</div>
+                            <div class="example-btn" onclick="setInput('普朗克常数')">普朗克常数</div>
                         </div>
-                        
-                        <div id="tab-formula" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('牛顿第二定律')">牛顿第二定律</div>
-                                <div class="example-btn" onclick="setInput('水的分子式')">水的分子式</div>
-                                <div class="example-btn" onclick="setInput('光速是多少')">光速是多少</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-calorie" class="tab-panel">
+                        <div class="examples">
+                            <!-- 重量+食物+热量 -->
+                            <div class="example-btn" onclick="setInput('100克米饭热量')">100克米饭热量</div>
+                            <div class="example-btn" onclick="setInput('50克面条热量')">50克面条热量</div>
+                            <div class="example-btn" onclick="setInput('200克苹果热量')">200克苹果热量</div>
+                            <div class="example-btn" onclick="setInput('150g鸡蛋热量')">150g鸡蛋热量</div>
+                            <!-- 自然表达 -->
+                            <div class="example-btn" onclick="setInput('我吃了100克米饭')">我吃了100克米饭</div>
+                            <div class="example-btn" onclick="setInput('我吃了一个苹果')">我吃了一个苹果</div>
+                            <div class="example-btn" onclick="setInput('我吃了200克牛肉')">我吃了200克牛肉</div>
+                            <!-- 基础热量查询 -->
+                            <div class="example-btn" onclick="setInput('苹果热量')">苹果热量</div>
+                            <div class="example-btn" onclick="setInput('香蕉热量')">香蕉热量</div>
+                            <div class="example-btn" onclick="setInput('鸡胸肉热量')">鸡胸肉热量</div>
+                            <div class="example-btn" onclick="setInput('牛奶热量')">牛奶热量</div>
+                            <div class="example-btn" onclick="setInput('面包热量')">面包热量</div>
+                            <!-- 更多食物 -->
+                            <div class="example-btn" onclick="setInput('西红柿热量')">西红柿热量</div>
+                            <div class="example-btn" onclick="setInput('土豆热量')">土豆热量</div>
+                            <div class="example-btn" onclick="setInput('鱼肉热量')">鱼肉热量</div>
                         </div>
-                        
-                        <div id="tab-calorie" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('100克米饭热量')">100克米饭热量</div>
-                                <div class="example-btn" onclick="setInput('我吃了100克米饭')">我吃了100克米饭</div>
-                                <div class="example-btn" onclick="setInput('苹果热量')">苹果热量</div>
-                            </div>
-                        </div>
-                        
-                        <div id="tab-zodiac" class="tab-panel">
-                            <div class="examples">
-                                <div class="example-btn" onclick="setInput('1990年属')">1990年属</div>
-                                <div class="example-btn" onclick="setInput('1998年属')">1998年属</div>
-                                <div class="example-btn" onclick="setInput('属虎的年份')">属虎的年份</div>
-                            </div>
+                    </div>
+                    
+                    <div id="tab-zodiac" class="tab-panel">
+                        <div class="examples">
+                            <!-- 年份查生肖 -->
+                            <div class="example-btn" onclick="setInput('1990年属')">1990年属</div>
+                            <div class="example-btn" onclick="setInput('1998年属什么')">1998年属什么</div>
+                            <div class="example-btn" onclick="setInput('2000年属')">2000年属</div>
+                            <div class="example-btn" onclick="setInput('1985属什么')">1985属什么</div>
+                            <div class="example-btn" onclick="setInput('2024年属什么')">2024年属什么</div>
+                            <!-- 生肖查年份 -->
+                            <div class="example-btn" onclick="setInput('属虎的年份')">属虎的年份</div>
+                            <div class="example-btn" onclick="setInput('属龙的年份')">属龙的年份</div>
+                            <div class="example-btn" onclick="setInput('属马的年份')">属马的年份</div>
+                            <div class="example-btn" onclick="setInput('属猴的年份')">属猴的年份</div>
+                            <!-- 生肖查询 -->
+                            <div class="example-btn" onclick="setInput('生肖鼠')">生肖鼠</div>
+                            <div class="example-btn" onclick="setInput('生肖牛')">生肖牛</div>
+                            <div class="example-btn" onclick="setInput('生肖兔')">生肖兔</div>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <div class="input-group">
+                    <input type="text" id="userInput" placeholder="在这里输入任何内容，系统将自动识别并智能续写..." />
+                    <button class="btn" onclick="processInput()">智能续写</button>
+                    <button class="btn btn-debug" id="debugBtn" onclick="toggleDebug()">🐛 调试</button>
+                </div>
+            </div>
+            
+            <!-- 续写结果 - 紧跟在输入框下方 -->
             <div class="result-section">
                 <h3>📝 续写结果</h3>
                 <div class="result-box">
@@ -417,7 +585,7 @@
                         <div class="spinner"></div>
                     </div>
                     <div id="result" class="result-content result-empty">
-                        在上方输入内容，点击"智能续写"按钮查看结果
+                        在上方输入内容，系统将自动识别并智能续写
                     </div>
                 </div>
             </div>
@@ -433,6 +601,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 调试面板 -->
+    <div id="debugPanel" class="debug-panel">
+        <div style="font-weight: bold; margin-bottom: 10px;">🐛 实时调试日志</div>
+        <div id="debugLogs"></div>
     </div>
 
     <script>
@@ -1262,21 +1436,7 @@
 
             formatOutput(result) {
                 if (!result) return '';
-                
-                switch (result.type) {
-                    case 'calculation':
-                        return result.result;
-                    case 'date':
-                    case 'timezone':
-                    case 'currency':
-                        return result.result;
-                    case 'conversion':
-                        return result.result;
-                    case 'formula':
-                        return result.result;
-                    default:
-                        return result.result || '';
-                }
+                return result.result || '';
             }
         }
 
@@ -1389,21 +1549,17 @@
             addDebugLog(`输入内容: "${input}"`);
             
             if (!input) {
-                resultElement.innerHTML = '<div class="result-empty">在上方输入内容，查看智能续写结果</div>';
+                resultElement.innerHTML = '<div class="result-empty">在上方输入内容，系统将自动识别并智能续写</div>';
                 addDebugLog('输入为空，显示提示');
                 return;
             }
 
             try {
                 addDebugLog('开始处理输入...');
-                // 实时处理输入 - 正确处理异步操作
                 const result = await smartCompletion.process(input);
                 addDebugLog('处理结果:', result);
                 
-                const output = smartCompletion.formatOutput(result);
-                addDebugLog('格式化输出:', output);
-                
-                if (output && result) {
+                if (result) {
                     const categoryNames = {
                         'math': '🔢 数学计算',
                         'date': '📅 日期时间', 
@@ -1415,20 +1571,20 @@
                         'zodiac': '🐲 生肖查询'
                     };
                     
-                    const categoryName = categoryNames[result.category || result.type] || '🤖 智能识别';
-                    const fullOutput = input + output;
+                    const categoryName = categoryNames[result.category] || '🤖 智能识别';
+                    const output = result.result;
                     
-                    addDebugLog(`匹配成功! 类别: ${result.category || result.type}`);
+                    addDebugLog(`匹配成功! 类别: ${result.category}`);
                     
                     resultElement.innerHTML = `
                         <div class="result-success">
-                            <div class="result-category">${categoryName}</div>
-                            <div class="result-content">${fullOutput}</div>
+                            <span class="category-tag">${categoryName}</span>
+                            ${input}${output}
                         </div>
                     `;
                 } else {
                     addDebugLog('无匹配结果，显示输入中状态');
-                    resultElement.innerHTML = `<span class="result-pending">输入中... "${input}"</span>`;
+                    resultElement.innerHTML = `<span class="result-empty">输入中...</span>`;
                 }
             } catch (error) {
                 addDebugLog(`处理错误: ${error.message}`);
@@ -1450,13 +1606,31 @@
             try {
                 // 处理输入
                 const result = await smartCompletion.process(input);
-                const output = smartCompletion.formatOutput(result);
                 
                 // 显示结果
                 const resultElement = document.getElementById('result');
-                if (output) {
+                if (result) {
+                    const categoryNames = {
+                        'math': '🔢 数学计算',
+                        'date': '📅 日期时间', 
+                        'timezone': '🌍 时区查询',
+                        'unit': '🔄 单位转换',
+                        'currency': '💰 汇率换算',
+                        'formula': '📐 公式定律',
+                        'calorie': '🍎 热量查询',
+                        'zodiac': '🐲 生肖查询'
+                    };
+                    
+                    const categoryName = categoryNames[result.category] || '🤖 智能识别';
+                    const output = result.result;
                     const fullOutput = input + output;
-                    resultElement.innerHTML = `<span class="result-success">${fullOutput}</span>`;
+                    
+                    resultElement.innerHTML = `
+                        <div class="result-success">
+                            <span class="category-tag">${categoryName}</span>
+                            ${fullOutput}
+                        </div>
+                    `;
                     
                     // 添加到历史记录
                     addToHistory(input, fullOutput);
